@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "634677250145",
+    "project_id": "ontimemessagingv2",
+    "storage_bucket": "ontimemessagingv2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634677250145:android:2caa19631031e419704220",
+        "android_client_info": {
+          "package_name": "hmrengg.com.ontimemessaging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634677250145-9tk3hh5s4rbdcg3169q1v6dd1c1kvttb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hmrengg.com.ontimemessaging",
+            "certificate_hash": "97ced7bd4ab87a8ad0d21a5e6919eb80a9e39393"
+          }
+        },
+        {
+          "client_id": "634677250145-utvl0upgsnqq40sgjntol3gl17hstmkm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDON82a4Re2HApnqSkcqMTfcemirBdf9s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634677250145-utvl0upgsnqq40sgjntol3gl17hstmkm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

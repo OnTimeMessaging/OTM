@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>634677250145-ujfn8bi8k0qmo03deaet1l800gdp85c8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.634677250145-ujfn8bi8k0qmo03deaet1l800gdp85c8</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>634677250145-9tk3hh5s4rbdcg3169q1v6dd1c1kvttb.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDj6Pza9ro8y0c5uN_OglsoAn6bffCPLHM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>634677250145</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>hmrengg.com.ontimemessaging</string>
+	<key>PROJECT_ID</key>
+	<string>ontimemessagingv2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ontimemessagingv2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:634677250145:ios:98a75817bede79ad704220</string>
+</dict>
+</plist>
