@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
@@ -34,9 +35,9 @@ class UsersPage extends StatelessWidget {
         radius: 20,
         child: !hasImage
             ? Text(
-                name.isEmpty ? '' : name[0].toUpperCase(),
-                style: const TextStyle(color: Colors.white),
-              )
+          name.isEmpty ? '' : name[0].toUpperCase(),
+          style: const TextStyle(color: Colors.white),
+        )
             : null,
       ),
     );
@@ -90,5 +91,4 @@ class UsersPage extends StatelessWidget {
         },
       ),
     );
-  }
-}
+  }}

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'rooms.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const RoomsPage(),
+      home:  RoomsPage(),
     );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:faker/faker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:ontimemessaging/profile.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -27,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _firstName = faker.person.firstName();
     _lastName = faker.person.lastName();
     _email =
-        '${_firstName!.toLowerCase()}.${_lastName!.toLowerCase()}@${faker.internet.domainName()}';
+    '${_firstName!.toLowerCase()}.${_lastName!.toLowerCase()}@${faker.internet.domainName()}';
     _focusNode = FocusNode();
     _passwordController = TextEditingController(text: 'Qawsed1-');
     _usernameController = TextEditingController(
@@ -52,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _usernameController!.text,
         password: _passwordController!.text,
       );
@@ -64,7 +66,8 @@ class _RegisterPageState extends State<RegisterPage> {
           lastName: _lastName,
         ),
       );
-      Navigator.of(context)..pop()..pop();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => EditProfilePage()));
     } catch (e) {
       setState(() {
         _registering = false;
@@ -90,73 +93,183 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  Widget _buildEmailTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Email',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          //   style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          // decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child:TextField(
+            style: TextStyle(color: Colors.white),
+            autocorrect: false,
+            autofillHints: _registering ? null : [AutofillHints.email],
+            autofocus: true,
+            controller: _usernameController,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color:Colors.white),
+              ),
+              border:  OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+
+              ),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.cancel,color: Colors.white,),
+                onPressed: () => _usernameController!.clear(),
+              ),
+            ),
+            keyboardType: TextInputType.emailAddress,
+            onEditingComplete: () {
+              _focusNode?.requestFocus();
+            },
+            readOnly: _registering,
+            textCapitalization: TextCapitalization.none,
+            textInputAction: TextInputAction.next,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Password',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          //  style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          //  decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            style: TextStyle(color: Colors.white),
+            autocorrect: false,
+            autofillHints: _registering ? null : [AutofillHints.password],
+            controller: _passwordController,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color:Colors.white),
+              ),
+              border:  OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+
+              ),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.cancel,color: Colors.white,),
+                onPressed: () => _passwordController!.clear(),
+              ),
+            ),
+            focusNode: _focusNode,
+            keyboardType: TextInputType.emailAddress,
+            obscureText: true,
+            onEditingComplete: _register,
+            textCapitalization: TextCapitalization.none,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        )
+      ],
+    );
+  }
+
+
+  Widget _buildLoginBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child:  RaisedButton(
+        child: TextButton(
+          onPressed:   _registering ? null : _register,
+          child: const Text('Sign Up'),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: Colors.white, onPressed: () {  },
+
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.dark,
-        title: const Text('Register'),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.only(top: 80, left: 24, right: 24),
-          child: Column(
-            children: [
-              TextField(
-                autocorrect: false,
-                autofillHints: _registering ? null : [AutofillHints.email],
-                autofocus: true,
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8.0),
-                    ),
-                  ),
-                  labelText: 'Email',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () => _usernameController?.clear(),
-                  ),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xff004e92), Color(0xff000428)])
+
                 ),
-                keyboardType: TextInputType.emailAddress,
-                onEditingComplete: () {
-                  _focusNode?.requestFocus();
-                },
-                readOnly: _registering,
-                textCapitalization: TextCapitalization.none,
-                textInputAction: TextInputAction.next,
               ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: TextField(
-                  autocorrect: false,
-                  autofillHints: _registering ? null : [AutofillHints.password],
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8.0),
-                      ),
-                    ),
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.cancel),
-                      onPressed: () => _passwordController?.clear(),
-                    ),
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 40.0,
+                    vertical: 120.0,
                   ),
-                  focusNode: _focusNode,
-                  keyboardType: TextInputType.emailAddress,
-                  obscureText: true,
-                  onEditingComplete: _register,
-                  textCapitalization: TextCapitalization.none,
-                  textInputAction: TextInputAction.done,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 30.0),
+                      _buildEmailTF(),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      _buildPasswordTF(),
+                    //  _buildForgotPasswordBtn(),
+                      // _buildRememberMeCheckbox(),
+                      _buildLoginBtn(),
+                     // _buildSignInWithText(),
+                     // _buildSocialBtnRow(),
+                      //    _buildSignupBtn(),
+                    ],
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: _registering ? null : _register,
-                child: const Text('Register'),
-              ),
+              )
             ],
           ),
         ),
@@ -164,3 +277,31 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         brightness: Brightness.dark,
+//         title: const Text('Register'),
+//       ),
+//       body: SingleChildScrollView(
+//         child: Container(
+//           padding: const EdgeInsets.only(top: 80, left: 24, right: 24),
+//           child: Column(
+//             children: [
+//
+//               Container(
+//                 margin: const EdgeInsets.symmetric(vertical: 8),
+//                 child:
+//               ),
+//               TextButton(
+//                 onPressed: _registering ? null : _register,
+//                 child: const Text('Register'),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

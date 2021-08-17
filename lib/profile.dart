@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ontimemessaging/rooms.dart';
 // import 'package:settings_ui/pages/settings.dart';
 
 class SettingsUI extends StatelessWidget {
@@ -108,10 +109,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return users
         .doc('${user!.uid}')
         .update({
-          'firstName': '${name.toString().split(' ')[0]}',
-          'imageUrl': '$profileImageUrl',
-          'lastName': '${name.toString().split(' ')[1]}'
-        })
+      'firstName': '${name.toString().split(' ')[0]}',
+      'imageUrl': '$profileImageUrl',
+      'lastName': '${name.toString().split(' ')[1]}'
+    })
         .then((value) => Navigator.pop(context))
         .catchError((error) => print("Failed to update user: $error"));
   }
@@ -155,15 +156,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-            ),
-            onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (BuildContext context) => SettingsPage()));
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.settings,
+          //   ),
+          //   onPressed: () {
+          //     // Navigator.of(context).push(MaterialPageRoute(
+          //     //     builder: (BuildContext context) => SettingsPage()));
+          //   },
+          // ),
         ],
       ),
       body: Container(
@@ -195,7 +196,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             border: Border.all(
                                 width: 4,
                                 color:
-                                    Theme.of(context).scaffoldBackgroundColor),
+                                Theme.of(context).scaffoldBackgroundColor),
                             boxShadow: [
                               BoxShadow(
                                   spreadRadius: 2,
@@ -208,7 +209,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
                                   profileImageUrl == ''
-                                      ? "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250"
+                                      ?"https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
                                       : profileImageUrl,
                                 ))),
                       ),
@@ -251,7 +252,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       decoration: InputDecoration(
                           labelText: 'Full Name',
                           hintText:
-                              '${users.doc('${user!.uid}').snapshots().toString()}'),
+                         "Name"),
                       onChanged: (value) {
                         setState(() {
                           name = value;
@@ -267,7 +268,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(labelText: user!.email),
                       onChanged: (value) {
                         email = value;
                       },
@@ -280,7 +281,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                  BoxDecoration(borderRadius: BorderRadius.circular(8)),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
@@ -293,22 +294,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 height: 35,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  OutlineButton(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {},
-                    child: Text("CANCEL",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.black)),
-                  ),
+                  // OutlineButton(
+                  //   padding: EdgeInsets.symmetric(horizontal: 50),
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(20)),
+                  //   onPressed: () {},
+                  //   child: Text("CANCEL",
+                  //       style: TextStyle(
+                  //           fontSize: 14,
+                  //           letterSpacing: 2.2,
+                  //           color: Colors.black)),
+                  // ),
                   RaisedButton(
                     onPressed: () {
                       updateUser();
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => RoomsPage()));
                     },
                     color: Colors.black,
                     padding: EdgeInsets.symmetric(horizontal: 50),
@@ -341,16 +344,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.grey,
-                    ),
-                  )
+              onPressed: () {
+                setState(() {
+                  showPassword = !showPassword;
+                });
+              },
+              icon: Icon(
+                Icons.remove_red_eye,
+                color: Colors.grey,
+              ),
+            )
                 : null,
             contentPadding: EdgeInsets.only(bottom: 3),
             labelText: labelText,
