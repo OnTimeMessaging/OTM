@@ -10,7 +10,7 @@
 //   Stream<User> get currentUser => _auth.authStateChanges();
 // }
 // class AuthBloc {
-//   final authService = AuthService();
+//   final auhServicethService = Aut();
 //   final googleSignin = GoogleSignIn(scopes: ['email']);
 //
 //   Stream<User> get currentUser => authService.currentUser;

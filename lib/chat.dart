@@ -187,7 +187,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void _handleSchedulingMessage() {}
+  // void _handleSchedulingMessage() {}
 
   @override
   Widget build(BuildContext context) {

@@ -25,7 +25,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  // FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final _auth = FirebaseAuth.instance;
 
@@ -45,9 +45,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (result != null) {
       // _setAttachmentUploading(true);
       final file = File(result.path);
-      final size = file.lengthSync();
-      final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
+      //final size = file.lengthSync();
+     // final bytes = await result.readAsBytes();
+      //final image = await decodeImageFromList(bytes);
       final name = result.name;
 
       try {
@@ -83,28 +83,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  // void _handleMessageTap(types.Message message) async {
-  //   if (message is types.FileMessage) {
-  //     var localPath = message.uri;
-  //
-  //     if (message.uri.startsWith('http')) {
-  //       final client = http.Client();
-  //       final request = await client.get(Uri.parse(message.uri));
-  //       final bytes = request.bodyBytes;
-  //       final documentsDir = (await getApplicationDocumentsDirectory()).path;
-  //       localPath = '$documentsDir/${message.name}';
-  //
-  //       if (!File(localPath).existsSync()) {
-  //         final file = File(localPath);
-  //         await file.writeAsBytes(bytes);
-  //       }
-  //     }
-  //
-  //     await OpenFile.open(localPath);
-  //   }
-  // }
-
-  Future<void> updateUser() async {
+  void updateUser() async {
     print(users.doc('${user!.uid}'));
     return users
         .doc('${user!.uid}')
@@ -117,11 +96,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
-  void getCurrentUser() async {
-    setState(() async {
+void getCurrentUser() async {
+    setState(() {
       try {
-        user = (await _auth.currentUser)!;
-
+        user = ( _auth.currentUser!);
+        print(name);
         print(user!.uid);
         print(user!.providerData.toString());
         print(user!.refreshToken);
@@ -140,6 +119,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
+
   }
 
   @override
@@ -171,7 +151,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: GestureDetector(
           onTap: () {
-            FocusScope.of(context).unfocus();
+            // FocusScope.of(context).unfocus();
+            // print(name);
+            // print(user!.uid);
+            // print(user!.providerData.toString());
+            // print(user!.refreshToken);
           },
           child: ListView(
             children: [
@@ -239,24 +223,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(
                 height: 35,
               ),
-              // buildTextField("Full Name", name, false),
-              // buildTextField("E-mail", "alexd@gmail.com", false),
-              // buildTextField("Password", "********", true),
-              // buildTextField("Location", "TLV, Israel", false),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TextField(
+                    child: TextFormField(
+
                       decoration: InputDecoration(
                           labelText: 'Full Name',
                           hintText:
-                         "Name"),
+                          "name"),
                       onChanged: (value) {
                         setState(() {
                           name = value;
-                        });
+                        }
+
+                        );
+
                       },
                     ),
                   ),
@@ -277,19 +261,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: InputDecoration(labelText: 'Status'),
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Container(
+              //     decoration:
+              //     BoxDecoration(borderRadius: BorderRadius.circular(8)),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: TextField(
+              //         decoration: InputDecoration(labelText: 'Status'),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: 35,
               ),
@@ -307,23 +291,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   //           letterSpacing: 2.2,
                   //           color: Colors.black)),
                   // ),
-                  RaisedButton(
-                    onPressed: () {
-                      updateUser();
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => RoomsPage()));
-                    },
-                    color: Colors.black,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text(
-                      "SAVE",
-                      style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white),
+                  Container(
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => RoomsPage()));
+                        updateUser();
+                      },
+                      color: Colors.black,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        "SAVE",
+                        style: TextStyle(
+                            fontSize: 14,
+                            letterSpacing: 2.2,
+                            color: Colors.white),
+                      ),
                     ),
                   )
                 ],
