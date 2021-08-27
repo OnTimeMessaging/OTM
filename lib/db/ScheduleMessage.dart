@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:intl/intl.dart';
 import 'package:ontimemessaging/db/MessageProvider.dart';
-import 'package:ontimemessaging/db/lib/providers/DialogProvider.dart';
+
 import 'package:ontimemessaging/db/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

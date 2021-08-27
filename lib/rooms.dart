@@ -12,8 +12,7 @@ import 'package:ontimemessaging/utils.dart';
 import 'Login.dart';
 
 import 'chat.dart';
-import 'db/SheduleMessages.dart';
-import 'db/lib/pages/schedule/SchedulePage.dart';
+
 import 'db/screen.dart';
 
 class RoomsPage extends StatefulWidget {
