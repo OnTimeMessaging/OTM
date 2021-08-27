@@ -5,10 +5,21 @@ class Todo {
   String udi;
   String todoDate;
   String time;
-  String image;
   int isFinished;
   MessageStatus status;
+Todo(
+  {
+    this.id,
+    this.status,
+    this.udi,
 
+    this.time,
+    this.todoDate,
+    this.message,
+    this.isFinished,
+
+}
+    );
 
   todoMap() {
     var mapping = Map<String, dynamic>();

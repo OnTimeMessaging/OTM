@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'Messagdata.dart';
 import 'MessageProvider.dart';
-import 'SheduleMessages.dart';
+import 'ScheduleMessage.dart';
+import 'lib/providers/DateTimeFormator.dart';
 
 
 class SheduleScreen extends StatefulWidget {
@@ -33,8 +34,8 @@ class _SheduleScreenState extends State<SheduleScreen> {
         model.id = todo['id'];
         model.udi = todo['udi'];
         model.message = todo['message'];
-        model.todoDate = todo['todoDate'];
         model.time = todo['time'];
+        model.todoDate = todo['todoDate'];
         model.isFinished = todo['isFinished'];
         _todoList.add(model);
       });
@@ -71,10 +72,9 @@ class _SheduleScreenState extends State<SheduleScreen> {
                         ],
                       ),
                       subtitle: Text(_todoList[index].time ?? 'No time'),
-                      trailing: Text(_todoList[index].todoDate ?? 'No Date'),
+                      trailing:Text(_todoList[index].todoDate ?? 'No time'),
+                    )))
 
-                    )),
-              ),
             );
           }),
       floatingActionButton: FloatingActionButton(
@@ -103,25 +103,26 @@ class _ReadListState extends State<ReadList> {
     getAllTodos();
   }
 
-  getAllTodos() async {
-    _todoService = TodoService();
-    _todoList = List<Todo>();
 
-    var todos = await _todoService.readTodos();
+    getAllTodos() async {
+      _todoService = TodoService();
+      _todoList = List<Todo>();
 
-    todos.forEach((todo) {
-      setState(() {
-        var model = Todo();
-        model.id = todo['id'];
-        model.udi = todo['udi'];
-        model.message = todo['message'];
-        model.todoDate = todo['todoDate'];
-        model.time = todo['time'];
-        model.isFinished = todo['isFinished'];
-        _todoList.add(model);
+      var todos = await _todoService.readTodos();
+
+      todos.forEach((todo) {
+        setState(() {
+          var model = Todo();
+          model.id = todo['id'];
+          model.udi = todo['udi'];
+          model.message = todo['message'];
+          model.time = todo['time'];
+          model.todoDate = todo['todoDate'];
+          model.isFinished = todo['isFinished'];
+          _todoList.add(model);
+        });
       });
-    });
-  }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +146,12 @@ class _ReadListState extends State<ReadList> {
                         SizedBox(height: 10,),
                         Text(_todoList[index].message),
                         SizedBox(height: 10,),
-                        Text(_todoList[index].todoDate  ),
+                        Text(_todoList[index].time ?? 'No time'),
                         SizedBox(height: 10,),
-                        Text(_todoList[index].time ),
+                     Text(_todoList[index].todoDate ?? 'No time'),
+                        // Text(_todoList[index].time),
+
+                        //Text(_todoList[index].todoDate ),
 
 
                       ],
