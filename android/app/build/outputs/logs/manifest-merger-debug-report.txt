@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
-INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
-INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
-INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
-MERGED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
+INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
+INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
+INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
+MERGED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
 MERGED from [:cloud_firestore] /home/chinmay/OTM/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_auth] /home/chinmay/OTM/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_storage] /home/chinmay/OTM/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
@@ -96,94 +96,16 @@ INJECTED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml:1:1-7:
 		INJECTED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml
 	android:versionName
 		INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
 		INJECTED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-77:12
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:1-41:12
 		INJECTED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
 		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:1:11-69
-uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:8:5-80
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:8:22-78
-uses-permission#android.permission.VIBRATE
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:9:5-66
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-66
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-66
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:9:22-63
-uses-permission#android.permission.RECORD_AUDIO
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:10:5-71
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:10:22-68
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:11:5-81
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:11:22-78
-uses-permission#android.permission.USE_FINGERPRINT
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:12:5-73
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:12:22-71
-uses-permission#android.permission.INTERNET
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:15:5-66
-MERGED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:15:5-66
-MERGED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:15:5-66
-MERGED from [:google_sign_in] /home/chinmay/OTM/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
-MERGED from [:google_sign_in] /home/chinmay/OTM/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
-MERGED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
-MERGED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
-MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:14:5-67
-MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:14:5-67
-MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
-MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
-MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:22:5-67
-MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:22:5-67
-MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
-MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
-MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:23:5-67
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:15:22-64
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:16:5-79
-MERGED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:13:5-79
-MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:13:5-79
-MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
-MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
-MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:23:5-79
-MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:23:5-79
-MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
-MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
-MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:24:5-79
-MERGED from [io.grpc:grpc-android:1.28.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/9fbe687fafbecc1727e69653ffa44b44/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
-MERGED from [io.grpc:grpc-android:1.28.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/9fbe687fafbecc1727e69653ffa44b44/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:16:22-76
-uses-permission#android.permission.BLUETOOTH
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:17:5-68
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:17:22-65
-uses-permission#android.permission.FOREGROUND_SERVICE
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:18:5-77
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:18:22-74
 application
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:21:4-76:19
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:3:5-40:19
 MERGED from [:cloud_firestore] /home/chinmay/OTM/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:cloud_firestore] /home/chinmay/OTM/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_auth] /home/chinmay/OTM/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
@@ -255,69 +177,51 @@ MERGED from [com.jakewharton.threetenabp:threetenabp:1.2.3] /home/chinmay/.gradl
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.3.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/3ed6b84209f648dd5f4c1acf00852cbb/core-1.3.0/AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:22:9-40
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:4:9-40
 	android:icon
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:23:9-43
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:5:9-43
 activity#hmrengg.com.ontimemessaging.MainActivity
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:24:9-52:20
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:6:9-34:20
 	android:launchMode
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:26:13-43
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:8:13-43
 	android:hardwareAccelerated
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:29:13-47
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:11:13-47
 	android:windowSoftInputMode
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:30:13-55
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:12:13-55
 	android:configChanges
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:28:13-163
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:10:13-163
 	android:theme
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:27:13-47
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:9:13-47
 	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:25:13-41
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:7:13-41
 meta-data#io.flutter.embedding.android.NormalTheme
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:35:13-38:17
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:17:13-20:19
 	android:resource
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:37:15-52
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:19:17-54
 	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:36:15-70
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:18:17-72
 meta-data#io.flutter.embedding.android.SplashScreenDrawable
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:44:13-47:17
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:26:13-29:19
 	android:resource
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:46:15-61
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:28:17-63
 	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:45:15-79
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:27:17-81
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:48:13-51:29
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:30:13-33:29
 action#android.intent.action.MAIN
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:49:17-68
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:31:17-68
 	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:49:25-66
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:31:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:50:17-76
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:32:17-76
 	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:50:27-74
-receiver#com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:53:5-102
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-106
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-106
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:53:15-99
-receiver#com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:54:5-58:16
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-20:20
-MERGED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-20:20
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:54:15-103
-intent-filter#action:name:android.intent.action.BOOT_COMPLETED
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:55:9-57:25
-action#android.intent.action.BOOT_COMPLETED
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:56:13-82
-	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:56:21-72
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:32:27-74
 meta-data#flutterEmbedding
-ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:73:9-75:33
+ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:37:9-39:33
 	android:value
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:75:13-30
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:39:13-30
 	android:name
-		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:74:13-44
+		ADDED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml:38:13-44
 uses-sdk
 INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml
@@ -494,6 +398,28 @@ INJECTED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /home/chinmay/OTM/android/app/src/main/AndroidManifest.xml
 		INJECTED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml:6:5-66
+MERGED from [:google_sign_in] /home/chinmay/OTM/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
+MERGED from [:google_sign_in] /home/chinmay/OTM/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-67
+MERGED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:14:5-67
+MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:14:5-67
+MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
+MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:27:5-67
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:22:5-67
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:22:5-67
+MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
+MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:11:5-67
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:23:5-67
+	android:name
+		ADDED from /home/chinmay/OTM/android/app/src/debug/AndroidManifest.xml:6:22-64
 service#com.google.firebase.components.ComponentDiscoveryService
 ADDED from [:cloud_firestore] /home/chinmay/OTM/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 MERGED from [:firebase_auth] /home/chinmay/OTM/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
@@ -584,12 +510,32 @@ data
 ADDED from [:file_picker] /home/chinmay/OTM/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-44
 	android:mimeType
 		ADDED from [:file_picker] /home/chinmay/OTM/build/file_picker/intermediates/library_manifest/debug/AndroidManifest.xml:13:19-41
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-81
+	android:name
+		ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:7:22-78
+uses-permission#android.permission.VIBRATE
+ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-66
+	android:name
+		ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:8:22-63
 uses-permission#android.permission.USE_FULL_SCREEN_INTENT
 ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:9:5-81
 	android:name
 		ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:9:22-78
+receiver#com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver
+ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:12:9-106
+	android:name
+		ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:12:19-103
+receiver#com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver
+ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:13:9-20:20
+	android:name
+		ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:13:19-107
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.intent.action.MY_PACKAGE_REPLACED+action:name:android.intent.action.QUICKBOOT_POWERON+action:name:com.htc.intent.action.QUICKBOOT_POWERON
 ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-19:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:15:17-79
+	android:name
+		ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:15:25-76
 action#android.intent.action.MY_PACKAGE_REPLACED
 ADDED from [:flutter_local_notifications] /home/chinmay/OTM/build/flutter_local_notifications/intermediates/library_manifest/debug/AndroidManifest.xml:16:17-84
 	android:name
@@ -662,6 +608,26 @@ ADDED from [com.google.firebase:firebase-common-ktx:20.0.0] /home/chinmay/.gradl
 		ADDED from [com.google.firebase:firebase-common-ktx:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b7263c29484a53734e31de5b113f5e43/jetified-firebase-common-ktx-20.0.0/AndroidManifest.xml:17:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-common-ktx:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b7263c29484a53734e31de5b113f5e43/jetified-firebase-common-ktx-20.0.0/AndroidManifest.xml:16:17-113
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:13:5-79
+MERGED from [com.google.firebase:firebase-firestore:23.0.2] /home/chinmay/.gradle/caches/transforms-2/files-2.1/863cdc35560765582a4b22ce3acb4ea0/jetified-firebase-firestore-23.0.2/AndroidManifest.xml:13:5-79
+MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.firebase:firebase-storage:20.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/1b1da317e75d1e5f9a3fdb04d44a433f/jetified-firebase-storage-20.0.0/AndroidManifest.xml:26:5-79
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-measurement-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/4a8a329fca92c8807a625b4058f28630/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:23:5-79
+MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
+MERGED from [com.google.firebase:firebase-installations:17.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/2733ee416a9a3a7703f654641d3c99ee/jetified-firebase-installations-17.0.0/AndroidManifest.xml:10:5-79
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/5cd0d79354261244f6a20fdc9d95e6ed/jetified-play-services-measurement-impl-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:19.0.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/ec8e985a01ffb31bef0a13fc0ca0d39e/jetified-play-services-measurement-sdk-api-19.0.0/AndroidManifest.xml:24:5-79
+MERGED from [io.grpc:grpc-android:1.28.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/9fbe687fafbecc1727e69653ffa44b44/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
+MERGED from [io.grpc:grpc-android:1.28.0] /home/chinmay/.gradle/caches/transforms-2/files-2.1/9fbe687fafbecc1727e69653ffa44b44/jetified-grpc-android-1.28.0/AndroidManifest.xml:11:5-79
+	android:name
+		ADDED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:24:22-76
 activity#com.google.firebase.auth.internal.GenericIdpActivity
 ADDED from [com.google.firebase:firebase-auth:21.0.1] /home/chinmay/.gradle/caches/transforms-2/files-2.1/39226147107c07d612c0b5c242740fda/jetified-firebase-auth-21.0.1/AndroidManifest.xml:27:9-44:20
 	android:excludeFromRecents

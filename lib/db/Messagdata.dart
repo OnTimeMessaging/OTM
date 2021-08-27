@@ -38,3 +38,6 @@ Todo(
   }
 }
 enum MessageStatus { PENDING, SENT, FAILED }
+
+
+enum MessageDriver { Schedule }

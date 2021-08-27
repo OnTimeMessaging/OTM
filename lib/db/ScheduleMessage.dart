@@ -198,7 +198,7 @@ class _TodoScreenState extends State<TodoScreen> {
                 todoObject.todoDate = _todoDateController.text;
                 todoObject.time = _todoTimeController.text;
                 var _todoService = TodoService();
-               // _getFinalMessage();
+
                 var result = await _todoService.saveTodo(todoObject);
 
                 if (result > 0) {
