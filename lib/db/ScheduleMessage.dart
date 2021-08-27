@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 import 'package:ontimemessaging/db/MessageProvider.dart';
 
@@ -27,7 +27,7 @@ class _TodoScreenState extends State<TodoScreen> {
   var _todoTitleController = TextEditingController();
 
   var _todoDescriptionController = TextEditingController();
-
+  final _textController = TextEditingController();
   var _todoDateController = TextEditingController();
   var _todoTimeController = TextEditingController();
   var _attachment = TextEditingController();
@@ -78,6 +78,9 @@ class _TodoScreenState extends State<TodoScreen> {
   void getLocalPreferences() async {
     prefs = await SharedPreferences.getInstance();
   }
+
+
+
 
   // MessageDriver _driverCtrl = MessageDriver.Schedule;
   //
@@ -198,9 +201,7 @@ class _TodoScreenState extends State<TodoScreen> {
                 todoObject.todoDate = _todoDateController.text;
                 todoObject.time = _todoTimeController.text;
                 var _todoService = TodoService();
-
                 var result = await _todoService.saveTodo(todoObject);
-
                 if (result > 0) {
                   _showSuccessSnackBar(Text('Created'));
                   Navigator.of(context).push(

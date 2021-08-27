@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:ontimemessaging/Users.dart';
+import 'package:ontimemessaging/db/screen.dart';
 import 'package:ontimemessaging/main.dart';
 import 'package:ontimemessaging/profile.dart';
 import 'package:ontimemessaging/utils.dart';
@@ -13,7 +14,7 @@ import 'Login.dart';
 
 import 'chat.dart';
 
-import 'db/screen.dart';
+
 
 class RoomsPage extends StatefulWidget {
 
