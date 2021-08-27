@@ -5,15 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:ontimemessaging/Users.dart';
+import 'package:ontimemessaging/main.dart';
 import 'package:ontimemessaging/profile.dart';
 import 'package:ontimemessaging/utils.dart';
 
 import 'Login.dart';
 
 import 'chat.dart';
+import 'db/SheduleMessages.dart';
+import 'db/lib/pages/schedule/SchedulePage.dart';
+import 'db/screen.dart';
 
 class RoomsPage extends StatefulWidget {
-  const RoomsPage({Key? key}) : super(key: key);
+
 
   @override
   _RoomsPageState createState() => _RoomsPageState();
@@ -22,7 +26,7 @@ class RoomsPage extends StatefulWidget {
 class _RoomsPageState extends State<RoomsPage> {
   bool _error = false;
   bool _initialized = false;
-  User? _user;
+  User _user;
 
   @override
   void initState() {
@@ -35,7 +39,7 @@ class _RoomsPageState extends State<RoomsPage> {
   void initializeFlutterFire() async {
     try {
       await Firebase.initializeApp();
-      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      FirebaseAuth.instance.authStateChanges().listen((User user) {
         setState(() {
           _user = user;
         });
@@ -57,7 +61,7 @@ class _RoomsPageState extends State<RoomsPage> {
     if (room.type == types.RoomType.direct) {
       try {
         final otherUser = room.users.firstWhere(
-              (u) => u.id != _user!.uid,
+              (u) => u.id != _user.uid,
         );
 
         color = getUserAvatarNameColor(otherUser);
@@ -74,7 +78,7 @@ class _RoomsPageState extends State<RoomsPage> {
       child: CircleAvatar(
         backgroundColor: color,
         radius: 20 ,
-        backgroundImage: room.imageUrl != null ? NetworkImage(room.imageUrl!):null,
+        backgroundImage: room.imageUrl != null ? NetworkImage(room.imageUrl):null,
         child:room.imageUrl != null
             ? Text(
           name.isEmpty ? '' : name[0].toUpperCase(),
@@ -120,6 +124,19 @@ class _RoomsPageState extends State<RoomsPage> {
               );
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.alarm),
+            onPressed: _user == null
+                ? null
+                : () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) =>  SheduleScreen(),
+                ),
+              );
+            },
+          ),
         ],
         brightness: Brightness.dark,
         leading: IconButton(
@@ -156,7 +173,7 @@ class _RoomsPageState extends State<RoomsPage> {
         stream: FirebaseChatCore.instance.rooms(),
         initialData: const [],
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          if (!snapshot.hasData || snapshot.data.isEmpty) {
             return Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(
@@ -167,9 +184,9 @@ class _RoomsPageState extends State<RoomsPage> {
           }
 
           return ListView.builder(
-            itemCount: snapshot.data!.length,
+            itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              final room = snapshot.data![index];
+              final room = snapshot.data[index];
 
               return GestureDetector(
                 onTap: () {

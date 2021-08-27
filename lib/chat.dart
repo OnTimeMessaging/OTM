@@ -14,8 +14,8 @@ import 'package:path_provider/path_provider.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
-    Key? key,
-    required this.room,
+    Key key,
+    this.room,
   }) : super(key: key);
 
   final types.Room room;
@@ -202,7 +202,7 @@ class _ChatPageState extends State<ChatPage> {
         builder: (context, snapshot) {
           return StreamBuilder<List<types.Message>>(
             initialData: const [],
-            stream: FirebaseChatCore.instance.messages(snapshot.data!),
+            stream: FirebaseChatCore.instance.messages(snapshot.data),
             builder: (context, snapshot) {
               return Chat(
                 isAttachmentUploading: _isAttachmentUploading,
@@ -212,7 +212,7 @@ class _ChatPageState extends State<ChatPage> {
                 onPreviewDataFetched: _handlePreviewDataFetched,
                 onSendPressed: _handleSendPressed,
                 user: types.User(
-                  id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+                  id: FirebaseChatCore.instance.firebaseUser.uid ?? '',
                 ),
               );
             },

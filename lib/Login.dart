@@ -5,17 +5,17 @@ import 'package:flutter/services.dart';
 import 'SignUp.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  FocusNode? _focusNode;
+  FocusNode _focusNode;
   bool _loggingIn = false;
-  TextEditingController? _passwordController;
-  TextEditingController? _usernameController;
+  TextEditingController _passwordController;
+  TextEditingController _usernameController;
 
   @override
   void initState() {
@@ -42,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _usernameController!.text,
-        password: _passwordController!.text,
+        email: _usernameController.text,
+        password: _passwordController.text,
       );
       Navigator.of(context).pop();
     } catch (e) {
@@ -107,12 +107,12 @@ class _LoginPageState extends State<LoginPage> {
               ),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.cancel,color: Colors.white,),
-                onPressed: () => _usernameController!.clear(),
+                onPressed: () => _usernameController.clear(),
               ),
             ),
             keyboardType: TextInputType.emailAddress,
             onEditingComplete: () {
-              _focusNode!.requestFocus();
+              _focusNode.requestFocus();
             },
             readOnly: _loggingIn,
             textCapitalization: TextCapitalization.none,
@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                   Icons.cancel,
                   color: Colors.white,
                 ),
-                onPressed: () => _passwordController?.clear(),
+                onPressed: () => _passwordController.clear(),
               ),
             ),
             focusNode: _focusNode,

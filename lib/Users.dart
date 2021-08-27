@@ -7,7 +7,7 @@ import 'package:ontimemessaging/utils.dart';
 import 'chat.dart';
 
 class UsersPage extends StatelessWidget {
-  const UsersPage({Key? key}) : super(key: key);
+
 
   void _handlePressed(types.User otherUser, BuildContext context) async {
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
@@ -31,7 +31,7 @@ class UsersPage extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       child: CircleAvatar(
         backgroundColor: color,
-        backgroundImage: hasImage ? NetworkImage(user.imageUrl!) : null,
+        backgroundImage: hasImage ? NetworkImage(user.imageUrl) : null,
         radius: 20,
         child: !hasImage
             ? Text(
@@ -54,7 +54,7 @@ class UsersPage extends StatelessWidget {
         stream: FirebaseChatCore.instance.users(),
         initialData: const [],
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          if (!snapshot.hasData || snapshot.data.isEmpty) {
             return Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(
@@ -65,9 +65,9 @@ class UsersPage extends StatelessWidget {
           }
 
           return ListView.builder(
-            itemCount: snapshot.data!.length,
+            itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              final user = snapshot.data![index];
+              final user = snapshot.data[index];
 
               return GestureDetector(
                 onTap: () {

@@ -28,13 +28,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final _auth = FirebaseAuth.instance;
-
-  User? user = FirebaseAuth.instance.currentUser;
+  String name;
+ String email;
+ String status;
+  String myId = '';
+  String myUsername = '';
+  String lastName = '';
+  String myUrlAvatar = '';
+  User user = FirebaseAuth.instance.currentUser;
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  String profileImageUrl = '';
-
+  String profileImageUrl = "";
+String imageUrl ="";
+  // String myId = snap['uid'];
+  // String myUsername = snap['name'];
+  // String myUrlAvatar = snap['avatarurl'];
+  void _getdata() async {
+    User user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      setState(() {
+        lastName = userData.data()['lastName'];
+        myUsername = userData.data()['firstName'];
+        myUrlAvatar = userData.data()['imageUrl'];
+      });
+    });
+    }
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
@@ -84,12 +107,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void updateUser() async {
-    print(users.doc('${user!.uid}'));
+    print(users.doc('${user.uid}'));
     return users
-        .doc('${user!.uid}')
+        .doc('${user.uid}')
         .update({
       'firstName': '${name.toString().split(' ')[0]}',
-      'imageUrl': '$profileImageUrl',
+     // 'imageUrl': '$profileImageUrl',
       'lastName': '${name.toString().split(' ')[1]}'
     })
         .then((value) => Navigator.pop(context))
@@ -99,19 +122,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
 void getCurrentUser() async {
     setState(() {
       try {
-        user = ( _auth.currentUser!);
-        print(name);
-        print(user!.uid);
-        print(user!.providerData.toString());
-        print(user!.refreshToken);
+        user = ( _auth.currentUser);
+        print(user);
+        // print(name);
+        // print(user!.uid);
+        // print(user!.providerData.toString());
+        // print(user!.refreshToken);
       } catch (e) {}
     });
   }
 
-  late String name;
-  late String email;
-  late String status;
-
+  TextEditingController firstNameController = TextEditingController();
   bool showPassword = false;
 
   @override
@@ -119,7 +140,7 @@ void getCurrentUser() async {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
-
+    _getdata();
   }
 
   @override
@@ -151,8 +172,13 @@ void getCurrentUser() async {
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: GestureDetector(
           onTap: () {
+            print(myUsername);
+            print(user);
+            print(myUrlAvatar);
             // FocusScope.of(context).unfocus();
-            // print(name);
+            // print(user);
+            // print(_auth.currentUser!);
+            // print(myUsername);
             // print(user!.uid);
             // print(user!.providerData.toString());
             // print(user!.refreshToken);
@@ -192,9 +218,9 @@ void getCurrentUser() async {
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  profileImageUrl == ''
+                                  myUrlAvatar == ''
                                       ?"https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
-                                      : profileImageUrl,
+                                      : myUrlAvatar,
                                 ))),
                       ),
                     ),
@@ -226,21 +252,28 @@ void getCurrentUser() async {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
 
                       decoration: InputDecoration(
-                          labelText: 'Full Name',
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          labelText: myUsername,
                           hintText:
                           "name"),
                       onChanged: (value) {
                         setState(() {
                           name = value;
                         }
-
                         );
-
                       },
                     ),
                   ),
@@ -249,15 +282,15 @@ void getCurrentUser() async {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: InputDecoration(labelText: user!.email),
-                      onChanged: (value) {
-                        email = value;
-                      },
-                    ),
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                 height: 60,
+                 child: Padding(
+                   padding: const EdgeInsets.only(right: 180),
+                   child: Center(child: Text("${user.email}")),
+                 ),
                 ),
               ),
 
@@ -332,7 +365,7 @@ void getCurrentUser() async {
                 ? IconButton(
               onPressed: () {
                 setState(() {
-                  showPassword = !showPassword;
+                  showPassword = showPassword;
                 });
               },
               icon: Icon(

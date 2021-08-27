@@ -7,20 +7,20 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:ontimemessaging/profile.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  String? _email;
-  String? _firstName;
-  FocusNode? _focusNode;
-  String? _lastName;
+  String _email;
+  String _firstName;
+  FocusNode _focusNode;
+  String _lastName;
   bool _registering = false;
-  TextEditingController? _passwordController;
-  TextEditingController? _usernameController;
+  TextEditingController _passwordController;
+  TextEditingController _usernameController;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _firstName = faker.person.firstName();
     _lastName = faker.person.lastName();
     _email =
-    '${_firstName!.toLowerCase()}.${_lastName!.toLowerCase()}@${faker.internet.domainName()}';
+    '${_firstName.toLowerCase()}.${_lastName.toLowerCase()}@${faker.internet.domainName()}';
     _focusNode = FocusNode();
     _passwordController = TextEditingController(text: 'Qawsed1-');
     _usernameController = TextEditingController(
@@ -40,8 +40,8 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void dispose() {
     _focusNode?.dispose();
-    _passwordController?.dispose();
-    _usernameController?.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
     super.dispose();
   }
 
@@ -55,13 +55,13 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       final credential =
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _usernameController!.text,
-        password: _passwordController!.text,
+        email: _usernameController.text,
+        password: _passwordController.text,
       );
       await FirebaseChatCore.instance.createUserInFirestore(
         types.User(
           firstName: _firstName,
-          id: credential.user!.uid,
+          id: credential.user.uid,
           imageUrl: 'https://i.pravatar.cc/300?u=$_email',
           lastName: _lastName,
         ),
@@ -128,12 +128,12 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.cancel,color: Colors.white,),
-                onPressed: () => _usernameController!.clear(),
+                onPressed: () => _usernameController.clear(),
               ),
             ),
             keyboardType: TextInputType.emailAddress,
             onEditingComplete: () {
-              _focusNode?.requestFocus();
+              _focusNode.requestFocus();
             },
             readOnly: _registering,
             textCapitalization: TextCapitalization.none,
@@ -178,7 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.cancel,color: Colors.white,),
-                onPressed: () => _passwordController!.clear(),
+                onPressed: () => _passwordController.clear(),
               ),
             ),
             focusNode: _focusNode,
