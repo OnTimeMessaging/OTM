@@ -46,7 +46,9 @@ class UsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.black,
       appBar: AppBar(
+        backgroundColor:Colors.black,
         brightness: Brightness.dark,
         title: const Text('Users'),
       ),
@@ -60,7 +62,7 @@ class UsersPage extends StatelessWidget {
               margin: const EdgeInsets.only(
                 bottom: 200,
               ),
-              child: const Text('No users'),
+              child: const Text('No users',style: TextStyle(color: Colors.white),),
             );
           }
 
@@ -81,7 +83,7 @@ class UsersPage extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildAvatar(user),
-                      Text(getUserName(user)),
+                      Text(getUserName(user),style: TextStyle(color: Colors.white),),
                     ],
                   ),
                 ),

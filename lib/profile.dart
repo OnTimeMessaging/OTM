@@ -29,21 +29,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   final _auth = FirebaseAuth.instance;
   String name;
- String email;
- String status;
+  String email;
+  String status;
   String myId = '';
   String myUsername = '';
   String lastName = '';
-  String myUrlAvatar = '';
+  String imageUrl = '';
   User user = FirebaseAuth.instance.currentUser;
-
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-  String profileImageUrl = "";
-String imageUrl ="";
-  // String myId = snap['uid'];
-  // String myUsername = snap['name'];
-  // String myUrlAvatar = snap['avatarurl'];
   void _getdata() async {
     User user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -52,9 +45,9 @@ String imageUrl ="";
         .snapshots()
         .listen((userData) {
       setState(() {
-        lastName = userData.data()['lastName'];
+        //lastName = userData.data()['lastName'];
         myUsername = userData.data()['firstName'];
-        myUrlAvatar = userData.data()['imageUrl'];
+        imageUrl = userData.data()['imageUrl'];
       });
     });
     }
@@ -66,11 +59,7 @@ String imageUrl ="";
     );
 
     if (result != null) {
-      // _setAttachmentUploading(true);
       final file = File(result.path);
-      //final size = file.lengthSync();
-     // final bytes = await result.readAsBytes();
-      //final image = await decodeImageFromList(bytes);
       final name = result.name;
 
       try {
@@ -80,7 +69,7 @@ String imageUrl ="";
 
         print(uri.toString());
         setState(() {
-          profileImageUrl = uri;
+          imageUrl = uri;
         });
       } catch (e) {
         print(e);
@@ -111,11 +100,11 @@ String imageUrl ="";
     return users
         .doc('${user.uid}')
         .update({
-      'firstName': '${name.toString().split(' ')[0]}',
-     // 'imageUrl': '$profileImageUrl',
-      'lastName': '${name.toString().split(' ')[1]}'
+      'firstName': '${name.toString()}',
+      'imageUrl': '${imageUrl.toString()}',
+    // 'lastName': '${name.toString()}'
     })
-        .then((value) => Navigator.pop(context))
+        .then((value) {print("Profile has been changed successfully");})
         .catchError((error) => print("Failed to update user: $error"));
   }
 
@@ -146,8 +135,12 @@ void getCurrentUser() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        elevation: 1,
+        title: Text("Profile"),
+        centerTitle: true,
+        backgroundColor: Colors.black,
+        elevation: 80,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -174,7 +167,8 @@ void getCurrentUser() async {
           onTap: () {
             print(myUsername);
             print(user);
-            print(myUrlAvatar);
+            print(imageUrl);
+            print(imageUrl);
             // FocusScope.of(context).unfocus();
             // print(user);
             // print(_auth.currentUser!);
@@ -185,10 +179,7 @@ void getCurrentUser() async {
           },
           child: ListView(
             children: [
-              Text(
-                "Edit Profile",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
+
               SizedBox(
                 height: 15,
               ),
@@ -204,7 +195,7 @@ void getCurrentUser() async {
                         height: 130,
                         decoration: BoxDecoration(
                             border: Border.all(
-                                width: 4,
+                                width: 3,
                                 color:
                                 Theme.of(context).scaffoldBackgroundColor),
                             boxShadow: [
@@ -218,9 +209,9 @@ void getCurrentUser() async {
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                  myUrlAvatar == ''
+                                  imageUrl == null
                                       ?"https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
-                                      : myUrlAvatar,
+                                      : imageUrl,
                                 ))),
                       ),
                     ),
@@ -228,13 +219,13 @@ void getCurrentUser() async {
                         bottom: 0,
                         right: 0,
                         child: Container(
-                          height: 40,
-                          width: 40,
+                          height: 30,
+                          width: 30,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
+                              width: 2,
+                              color:Colors.white,
                             ),
                             color: Colors.black,
                           ),
@@ -259,14 +250,21 @@ void getCurrentUser() async {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color:Colors.white),
+                        ),
+                        border:  OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+
+                        ),
+
                           labelText: myUsername,
+                          labelStyle: TextStyle(color: Colors.white),
                           hintText:
                           "name"),
                       onChanged: (value) {
@@ -274,6 +272,7 @@ void getCurrentUser() async {
                           name = value;
                         }
                         );
+
                       },
                     ),
                   ),
@@ -283,13 +282,13 @@ void getCurrentUser() async {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                  height: 60,
                  child: Padding(
                    padding: const EdgeInsets.only(right: 180),
-                   child: Center(child: Text("${user.email}")),
+                   child: Center(child: Text("${user.email}", style: TextStyle(color: Colors.white),)),
                  ),
                 ),
               ),
@@ -325,17 +324,17 @@ void getCurrentUser() async {
                   //           color: Colors.black)),
                   // ),
                   Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.white)
+                    ),
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => RoomsPage()));
-                        updateUser();
-                      },
+                      updateUser();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => RoomsPage()));
+                                        },
                       color: Colors.black,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
                       child: Text(
                         "SAVE",
                         style: TextStyle(

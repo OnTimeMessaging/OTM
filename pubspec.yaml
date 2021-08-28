@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  jitsi_meet: any
   contact_picker: any
   sms: any
   permission_handler: any
@@ -55,11 +55,12 @@ dependencies:
   flutter_signin_button: any
   google_sign_in: any
   provider: any
+  fluttertoast: any
   date_format: any
   starflut: any
   mailer: any
   app_settings: any
-
+  firebase_messaging: any
 
 
 

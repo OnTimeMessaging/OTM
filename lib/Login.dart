@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() async {
     FocusScope.of(context).unfocus();
-
     setState(() {
       _loggingIn = true;
     });
@@ -323,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Color(0xff004e92), Color(0xff000428)])
+                    colors: [Colors.black, Color(0xff000428)])
 
                 ),
               ),

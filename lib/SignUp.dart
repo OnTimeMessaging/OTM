@@ -64,6 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
           id: credential.user.uid,
           imageUrl: 'https://i.pravatar.cc/300?u=$_email',
           lastName: _lastName,
+
         ),
       );
       Navigator.push(
@@ -230,7 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Color(0xff004e92), Color(0xff000428)])
+                        colors: [Colors.black, Color(0xff000428)])
 
                 ),
               ),

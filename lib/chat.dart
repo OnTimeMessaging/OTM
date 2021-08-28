@@ -1,16 +1,22 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'Call/jitsiCall.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -103,6 +109,52 @@ class _ChatPageState extends State<ChatPage> {
       }
     }
   }
+  final serverText = TextEditingController();
+  final roomText = TextEditingController(text: "plugintestroom");
+  final subjectText = TextEditingController(text: "My Plugin Test Meeting");
+  final nameText = TextEditingController(text: "Plugin Test User");
+  final emailText = TextEditingController(text: "fake@email.com");
+  final iosAppBarRGBAColor =
+  TextEditingController(text: "#0080FF80"); //transparent blue
+
+  bool isAudioOnly = true;
+  bool isAudioMuted = true;
+  bool isVideoMuted = true;
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  final _auth = FirebaseAuth.instance;
+  String myId = '';
+  String myUsername = '';
+  String myUrlAvatar = '';
+  User user = FirebaseAuth.instance.currentUser;
+ // String profileImageUrl = "";
+  // String imageUrl ="";
+  void _getdata() async {
+    User user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .listen((userData) {
+      setState(() {
+        myUsername = userData.data()['firstName'];
+        myUrlAvatar = userData.data()['imageUrl'];
+      });
+    });
+  }
+  void getCurrentUser() async {
+    setState(() {
+      try {
+        user = ( _auth.currentUser);
+        print(user);
+        // print(name);
+        // print(user!.uid);
+        // print(user!.providerData.toString());
+        // print(user!.refreshToken);
+      } catch (e) {}
+    });
+  }
 
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
@@ -187,14 +239,40 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+    _getdata();
+    JitsiMeet.addListener(JitsiMeetingListener(
+        onConferenceWillJoin: _onConferenceWillJoin,
+        onConferenceJoined: _onConferenceJoined,
+        onConferenceTerminated: _onConferenceTerminated,
+        onError: _onError));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    JitsiMeet.removeAllListeners();
+  }
   // void _handleSchedulingMessage() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
-        brightness: Brightness.dark,
+        backgroundColor: Colors.black,
         title: const Text('Chat'),
+          actions: [
+          IconButton(
+          icon: const Icon(Icons.call,color: Colors.white,),
+      onPressed:(){
+          _joinMeeting();
+      },
+    ),
+        ],
       ),
       body: StreamBuilder<types.Room>(
         initialData: widget.room,
@@ -221,4 +299,79 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
+  _joinMeeting() async {
+    String serverUrl = serverText.text.trim().isEmpty ? null : serverText.text;
+
+    Map<FeatureFlagEnum, bool> featureFlags = {
+      FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+    };
+    if (!kIsWeb) {
+      // Here is an example, disabling features for each platform
+      if (Platform.isAndroid) {
+        // Disable ConnectionService usage on Android to avoid issues (see README)
+        featureFlags[FeatureFlagEnum.CALL_INTEGRATION_ENABLED] = false;
+      } else if (Platform.isIOS) {
+        // Disable PIP on iOS as it looks weird
+        featureFlags[FeatureFlagEnum.PIP_ENABLED] = false;
+      }
+    }
+    // Define meetings options here
+    var options = JitsiMeetingOptions(room: roomText.text)
+      ..serverURL = serverUrl
+      ..userDisplayName = myUsername
+      ..userEmail = user.email
+      ..iosAppBarRGBAColor = iosAppBarRGBAColor.text
+      ..audioOnly = isAudioOnly
+      ..audioMuted = isAudioMuted
+      ..videoMuted = isVideoMuted
+      ..featureFlags.addAll(featureFlags)
+      ..webOptions = {
+        "roomName": myUsername,
+        "width": "100%",
+        "height": "100%",
+        "enableWelcomePage": false,
+        "chromeExtensionBanner": null,
+        "userInfo": {"displayName": myUsername}
+      };
+
+
+    debugPrint("JitsiMeetingOptions: $options");
+    await JitsiMeet.joinMeeting(
+      options,
+      listener: JitsiMeetingListener(
+          onConferenceWillJoin: (message) {
+            debugPrint("${options.room} will join with message: $message");
+          },
+          onConferenceJoined: (message) {
+            debugPrint("${options.room} joined with message: $message");
+          },
+          onConferenceTerminated: (message) {
+            debugPrint("${options.room} terminated with message: $message");
+          },
+          genericListeners: [
+            JitsiGenericListener(
+                eventName: 'readyToClose',
+                callback: (dynamic message) {
+                  debugPrint("readyToClose callback");
+                }),
+          ]),
+    );
+  }
+
+  void _onConferenceWillJoin(message) {
+    debugPrint("_onConferenceWillJoin broadcasted with message: $message");
+  }
+
+  void _onConferenceJoined(message) {
+    debugPrint("_onConferenceJoined broadcasted with message: $message");
+  }
+
+  void _onConferenceTerminated(message) {
+    debugPrint("_onConferenceTerminated broadcasted with message: $message");
+  }
+
+  _onError(error) {
+    debugPrint("_onError broadcasted: $error");
+  }
+
 }
