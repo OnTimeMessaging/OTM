@@ -45,9 +45,11 @@ class _SheduleScreenState extends State<SheduleScreen> {
   Widget build(BuildContext context) {
     print(_todoList);
     return Scaffold(
-
+    backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text('Todolist Sqflite'),
+
       ),
       body: ListView.builder(
           itemCount: _todoList.length,

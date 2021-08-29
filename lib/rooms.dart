@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -202,7 +203,7 @@ class _RoomsPageState extends State<RoomsPage> {
           ? null
           : FloatingActionButton(
           onPressed: () {
-            showNotifications();
+         //   showNotifications();
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return UsersPage();
             }));
@@ -218,20 +219,21 @@ class _RoomsPageState extends State<RoomsPage> {
             elevation: 0,
             backgroundColor: Colors.black,
             actions: [
-              IconButton(
-                icon: const Icon(Icons.alarm),
-                onPressed: _user == null
-                    ? null
-                    : () {
-                  
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => SheduleScreen(),
-                          ),
-                        );
-                      },
-              ),
+              // IconButton(
+              //   icon: const Icon(Icons.alarm),
+              //   onPressed: _user == null
+              //       ? null
+              //       : () {
+              //
+              //           Navigator.of(context).push(
+              //             MaterialPageRoute(
+              //               fullscreenDialog: true,
+              //               builder: (context) => SheduleScreen(),
+              //             ),
+              //           );
+              //         },
+              // ),
+
 
               // IconButton(
               //   icon: const Icon(Icons.account_circle),
@@ -246,33 +248,33 @@ class _RoomsPageState extends State<RoomsPage> {
               //     );
               //   },
               // ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => EditProfilePage(),
-                      ),
-                    );
-                  },
-                  child: CircleAvatar(
-                    radius: 15.0,
-                    backgroundImage: NetworkImage(
-                      imageUrl == null
-                          ? "https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
-                          : imageUrl,
-                    ),
-                    backgroundColor: Colors.transparent,
-                  ),
-                ),
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: _user == null ? null : logout,
               )
             ],
             brightness: Brightness.dark,
-            leading: IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: _user == null ? null : logout,
+            leading:   Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => EditProfilePage(),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 5.0,
+                  backgroundImage: NetworkImage(
+                    imageUrl == null
+                        ? "https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
+                        : imageUrl,
+                  ),
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
             ),
             centerTitle: true,
             title:  Text('OTM'),
@@ -286,20 +288,44 @@ class _RoomsPageState extends State<RoomsPage> {
             bottom: 200,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text('Not authenticated'),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) =>  LoginPage(),
-                    ),
-                  );
-                },
-                child: const Text('Login'),
+              Image.asset(
+                'assets/images/Welcome.png',
+                height:MediaQuery.of(context).size.height/2,
               ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.of(context).push(
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) =>  LoginPage(),
+                            ),
+                          );
+                        },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue
+                  ),
+                  height: MediaQuery.of(context).size.height/15,
+                  width: MediaQuery.of(context).size.width/1.5,
+                  child: Center(child: Text("Welcome",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25),)),
+                ),
+              )
+              // TextButton(
+              //   onPressed: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         fullscreenDialog: true,
+              //         builder: (context) =>  LoginPage(),
+              //       ),
+              //     );
+              //   },
+              //   child: const Text('Welcome'),
+              // ),
             ],
           ),
         )
