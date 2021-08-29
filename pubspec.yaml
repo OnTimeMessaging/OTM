@@ -26,10 +26,8 @@ dependencies:
 
   jitsi_meet: any
   contact_picker: any
-  sms: any
   permission_handler: any
-  whatsapp_unilink: any
-  android_intent: any
+#  android_intent: any
   font_awesome_flutter: any
   is_lock_screen: any
   splashscreen: any
@@ -58,8 +56,6 @@ dependencies:
   fluttertoast: any
   date_format: any
   starflut: any
-  mailer: any
-  app_settings: any
   firebase_messaging: any
 
 
