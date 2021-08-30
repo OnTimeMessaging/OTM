@@ -39,38 +39,53 @@ class _ChatPageState extends State<ChatPage> {
       builder: (BuildContext context) {
         return SafeArea(
           child: SizedBox(
-            height: 144,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
+           height: 144,
+            child: Container(
+              color: Colors.grey,
+              child: Row(
+                children: [
+                  IconButton(onPressed: (){
                     Navigator.pop(context);
                     _handleImageSelection();
-                  },
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Photo'),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
+                  }, icon: Icon(Icons.photo,size: 30,)),
+                  IconButton(onPressed: (){
                     Navigator.pop(context);
-                    _handleFileSelection();
-                  },
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('File'),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Cancel'),
-                  ),
-                ),
-              ],
+                             _handleFileSelection();
+                  }, icon: Icon(Icons.attach_file))
+                ],
+              ),
+              // child: Column(
+              //   crossAxisAlignment: CrossAxisAlignment.stretch,
+              //   children: <Widget>[
+              //     TextButton(
+              //       onPressed: () {
+              //         Navigator.pop(context);
+              //         _handleImageSelection();
+              //       },
+              //       child: const Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: Text('Photo',style: TextStyle(color: Colors.white),),
+              //       ),
+              //     ),
+              //     TextButton(
+              //       onPressed: () {
+              //         Navigator.pop(context);
+              //         _handleFileSelection();
+              //       },
+              //       child: const Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: Text('File'),
+              //       ),
+              //     ),
+              //     TextButton(
+              //       onPressed: () => Navigator.pop(context),
+              //       child: const Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: Text('Cancel'),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ),
           ),
         );

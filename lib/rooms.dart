@@ -34,7 +34,7 @@ class _RoomsPageState extends State<RoomsPage> {
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
   String lastName = '';
   String imageUrl = '';
 
@@ -83,7 +83,7 @@ class _RoomsPageState extends State<RoomsPage> {
             });
       }
     });
-}
+  }
 
   void showNotification() {
     setState(() {
@@ -94,12 +94,14 @@ class _RoomsPageState extends State<RoomsPage> {
         "Testing $_counter",
         "How you doin ?",
         NotificationDetails(
-            android: AndroidNotificationDetails(channel.id, channel.name, channel.description,
+            android: AndroidNotificationDetails(
+                channel.id, channel.name, channel.description,
                 importance: Importance.high,
                 color: Colors.blue,
                 playSound: true,
                 icon: '@mipmap/ic_launcher')));
   }
+
   void _getdata() async {
     User user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -145,7 +147,8 @@ class _RoomsPageState extends State<RoomsPage> {
         "Testing $_counter",
         "How you doing ?",
         NotificationDetails(
-            android: AndroidNotificationDetails(channel.id, channel.name, channel.description,
+            android: AndroidNotificationDetails(
+                channel.id, channel.name, channel.description,
                 importance: Importance.high,
                 color: Colors.blue,
                 playSound: true,
@@ -159,7 +162,7 @@ class _RoomsPageState extends State<RoomsPage> {
     if (room.type == types.RoomType.direct) {
       try {
         final otherUser = room.users.firstWhere(
-          (u) => u.id != _user.uid,
+              (u) => u.id != _user.uid,
         );
         color = getUserAvatarNameColor(otherUser);
       } catch (e) {
@@ -176,12 +179,12 @@ class _RoomsPageState extends State<RoomsPage> {
         backgroundColor: color,
         radius: 20,
         backgroundImage:
-            room.imageUrl != null ? NetworkImage(room.imageUrl) : null,
-        child: room.imageUrl != null
+        room.imageUrl != null ? NetworkImage(room.imageUrl) : null,
+        child: room.imageUrl == null
             ? Text(
-                name.isEmpty ? '' : name[0].toUpperCase(),
-                style: const TextStyle(color: Colors.white),
-              )
+          name.isEmpty ? '' : name[0].toUpperCase(),
+          style: const TextStyle(color: Colors.white),
+        )
             : null,
       ),
     );
@@ -197,13 +200,15 @@ class _RoomsPageState extends State<RoomsPage> {
       return Container();
     }
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      floatingActionButton:  _user == null
-          ? null
-          : FloatingActionButton(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        floatingActionButton: _user == null
+            ? null
+            : FloatingActionButton(
           onPressed: () {
-         //   showNotifications();
+            //   showNotifications();
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return UsersPage();
             }));
@@ -211,9 +216,9 @@ class _RoomsPageState extends State<RoomsPage> {
           child: Icon(Icons.chat),
         ),
 
-      appBar: _user == null
-          ? null
-   : PreferredSize(
+        appBar: _user == null
+            ? null
+            : PreferredSize(
           preferredSize: Size.fromHeight(75.0),
           child: AppBar(
             elevation: 0,
@@ -254,7 +259,7 @@ class _RoomsPageState extends State<RoomsPage> {
               )
             ],
             brightness: Brightness.dark,
-            leading:   Padding(
+            leading: Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
@@ -277,42 +282,50 @@ class _RoomsPageState extends State<RoomsPage> {
               ),
             ),
             centerTitle: true,
-            title:  Text('OTM'),
+            title: Text('OTM'),
           ),
         ),
 
         body: _user == null
             ? Container(
-          alignment: Alignment.center,
-          margin: const EdgeInsets.only(
-            bottom: 200,
-          ),
+
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text('Not authenticated'),
               Image.asset(
                 'assets/images/Welcome.png',
-                height:MediaQuery.of(context).size.height/2,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 2,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.of(context).push(
-                            MaterialPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) =>  LoginPage(),
-                            ),
-                          );
-                        },
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+                },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.blue
                   ),
-                  height: MediaQuery.of(context).size.height/15,
-                  width: MediaQuery.of(context).size.width/1.5,
-                  child: Center(child: Text("Welcome",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25),)),
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height / 15,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width / 1.5,
+                  child: Center(child: Text("Welcome", style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25),)),
                 ),
               )
               // TextButton(
@@ -330,54 +343,58 @@ class _RoomsPageState extends State<RoomsPage> {
           ),
         )
 
-          : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<List<types.Room>>(
-                stream: FirebaseChatCore.instance.rooms(),
-                initialData: const [],
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    return Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(
-                        bottom: 200,
-                      ),
-                      child: const Text('No rooms'),
-                    );
-                  }
+            : Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: StreamBuilder<List<types.Room>>(
+            stream: FirebaseChatCore.instance.rooms(),
+            initialData: const [],
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data.isEmpty) {
+                return Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(
+                    bottom: 200,
+                  ),
+                  child: const Text(
+                    'No rooms', style: TextStyle(color: Colors.white),),
+                );
+              }
 
-                  return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      final room = snapshot.data[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChatPage(
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  final room = snapshot.data[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(
                                 room: room,
                               ),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              _buildAvatar(room),
-                              Text(
-                                room.name ?? 'User Name Not Available',style: TextStyle(color: Colors.white),
-
-                              ),
-                            ],
-                          ),
                         ),
                       );
                     },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          _buildAvatar(room),
+                          Text(
+                            room.name ?? 'User Name Not Available',
+                            style: TextStyle(color: Colors.white),
+
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 },
-              ),
+              );
+            },
           ),
+        ),
+      ),
     );
   }
 }
