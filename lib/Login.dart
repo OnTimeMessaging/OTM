@@ -206,8 +206,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        color: Colors.white, onPressed: () {  },
-
+        color: Colors.white, onPressed: _loggingIn ? null : _login,
       ),
     );
   }

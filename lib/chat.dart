@@ -42,47 +42,59 @@ class _ChatPageState extends State<ChatPage> {
            height: 140,
             child: Container(
               color: Colors.black,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  IconButton(onPressed: (){
-                    Navigator.pop(context);
-                    _handleImageSelection();
-                  },
-                  icon: Icon(Icons.photo,color: Colors.white,size: 30,),),
-                  IconButton(onPressed: (){
-                    Navigator.pop(context);
-                    _handleFileSelection();
-                  },
-                    icon: Icon(Icons.attach_file_sharp,color: Colors.white,size: 30,),),
-                  // TextButton(
-                  //   onPressed: () {
-                  //     Navigator.pop(context);
-                  //     _handleImageSelection();
-                  //   },
-                  //   child: const Align(
-                  //     alignment: Alignment.centerLeft,
-                  //     child: Text('Photo'),
-                  //   ),
-                  // ),
-                  // TextButton(
-                  //   onPressed: () {
-                  //     Navigator.pop(context);
-                  //     _handleFileSelection();
-                  //   },
-                  //   child: const Align(
-                  //     alignment: Alignment.centerLeft,
-                  //     child: Text('File'),
-                  //   ),
-                  // ),
-                  // TextButton(
-                  //   onPressed: () => Navigator.pop(context),
-                  //   child: const Align(
-                  //     alignment: Alignment.centerLeft,
-                  //     child: Text('Cancel'),
-                  //   ),
-                  // ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                      color: Colors.white),
+                      child: IconButton(onPressed: (){
+                        Navigator.pop(context);
+                        _handleImageSelection();
+                      },
+                      icon: Icon(Icons.photo,size: 30,),),
+                    ),
+                    SizedBox(height: 10,),
+                    Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      child: IconButton(onPressed: (){
+                        Navigator.pop(context);
+                        _handleFileSelection();
+                      },
+                        icon: Icon(Icons.attach_file_sharp,size: 30,),),
+                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     Navigator.pop(context);
+                    //     _handleImageSelection();
+                    //   },
+                    //   child: const Align(
+                    //     alignment: Alignment.centerLeft,
+                    //     child: Text('Photo'),
+                    //   ),
+                    // ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     Navigator.pop(context);
+                    //     _handleFileSelection();
+                    //   },
+                    //   child: const Align(
+                    //     alignment: Alignment.centerLeft,
+                    //     child: Text('File'),
+                    //   ),
+                    // ),
+                    // TextButton(
+                    //   onPressed: () => Navigator.pop(context),
+                    //   child: const Align(
+                    //     alignment: Alignment.centerLeft,
+                    //     child: Text('Cancel'),
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -141,8 +153,6 @@ class _ChatPageState extends State<ChatPage> {
   String myUsername = '';
   String myUrlAvatar = '';
   User user = FirebaseAuth.instance.currentUser;
- // String profileImageUrl = "";
-  // String imageUrl ="";
   void _getdata() async {
     User user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -188,7 +198,6 @@ class _ChatPageState extends State<ChatPage> {
         final reference = FirebaseStorage.instance.ref(name);
         await reference.putFile(file);
         final uri = await reference.getDownloadURL();
-
         final message = types.PartialImage(
           height: image.height.toDouble(),
           name: name,
@@ -277,7 +286,7 @@ class _ChatPageState extends State<ChatPage> {
 
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Chat'),
+        title: Text(widget.room.name),
           actions: [
           IconButton(
           icon: const Icon(Icons.call,color: Colors.white,),

@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ontimemessaging/rooms.dart';
 // import 'package:settings_ui/pages/settings.dart';
@@ -33,24 +35,36 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String status;
   String myId = '';
   String myUsername = '';
-  String lastName = '';
+
   String imageUrl = '';
+
   User user = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-  void _getdata() async {
-    User user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .snapshots()
-        .listen((userData) {
-      setState(() {
-        //lastName = userData.data()['lastName'];
-        myUsername = userData.data()['firstName'];
-        imageUrl = userData.data()['imageUrl'];
-      });
-    });
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    _getUserName();
+    getCurrentUser();
+    super.initState();
+
   }
+  Future<void> _getUserName() async {
+    User user = FirebaseAuth.instance.currentUser;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc('${user.uid}')
+          .snapshots()
+          .listen((userData) {
+        setState(() {
+          //lastName = userData.data()['lastName'];
+          myUsername = userData.data()['firstName'].toString();
+          imageUrl = userData.data()['imageUrl'].toString();
+        });
+      });
+    }
+  //
+  //
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
@@ -61,13 +75,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (result != null) {
       final file = File(result.path);
       final name = result.name;
-
       try {
         final reference = FirebaseStorage.instance.ref(name);
         await reference.putFile(file);
         final uri = await reference.getDownloadURL();
-
-        print(uri.toString());
         setState(() {
           imageUrl = uri;
         });
@@ -75,35 +86,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
         print(e);
       }
 
-      // final message = types.PartialImage(
-      //   height: image.height.toDouble(),
-      //   name: name,
-      //   size: size,
-      //   uri: uri,
-      //   width: image.width.toDouble(),
-      // );
-
-      // FirebaseChatCore.instance.sendMessage(
-      //   message,
-      //   widget.room.id,
-      // );
-      //   _setAttachmentUploading(false);
-      // } on FirebaseException catch (e) {
-      //   _setAttachmentUploading(false);
-      //   print(e);
-      // }
     }
+  }
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   void updateUser() async {
-    print(users.doc('${user.uid}'));
+   var updateObject =Map<String, dynamic>();
+   if( name != null) {
+     updateObject['firstName'] = name.toString();
+   }
+   if(imageUrl != null) {
+     updateObject['imageUrl'] = imageUrl.toString();
+   }
     return users
         .doc('${user.uid}')
-        .update({
-      'firstName': '${name.toString()}',
-      'imageUrl': '${imageUrl.toString()}',
-      // 'lastName': '${name.toString()}'
-    })
+        .update(updateObject
+    //     {
+    //
+    //   // 'firstName': '${name.toString()}',
+    //   // 'imageUrl': '${imageUrl.toString()}',
+    //   // 'lastName': '${name.toString()}'
+    // }
+    )
         .then((value) {print("Profile has been changed successfully");})
         .catchError((error) => print("Failed to update user: $error"));
   }
@@ -111,25 +117,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void getCurrentUser() async {
     setState(() {
       try {
-        user = ( _auth.currentUser);
-        print(user);
-        // print(name);
-        // print(user!.uid);
-        // print(user!.providerData.toString());
-        // print(user!.refreshToken);
+        user =  _auth.currentUser;
       } catch (e) {}
     });
-  }
-
-  TextEditingController firstNameController = TextEditingController();
-  bool showPassword = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getCurrentUser();
-    _getdata();
   }
 
   @override
@@ -152,12 +142,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         actions: [
           // IconButton(
           //   icon: Icon(
-          //     Icons.settings,
+          //     Icons.logout_outlined,
           //   ),
-          //   onPressed: () {
+          //   onPressed: user == null ? null : logout,
           //     // Navigator.of(context).push(MaterialPageRoute(
           //     //     builder: (BuildContext context) => SettingsPage()));
-          //   },
           // ),
         ],
       ),
@@ -165,56 +154,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: GestureDetector(
           onTap: () {
-            print(myUsername);
-            print(user);
-            print(imageUrl);
-            print(imageUrl);
-            // FocusScope.of(context).unfocus();
-            // print(user);
-            // print(_auth.currentUser!);
-            // print(myUsername);
-            // print(user!.uid);
-            // print(user!.providerData.toString());
-            // print(user!.refreshToken);
+            print(_auth.currentUser);
           },
           child: ListView(
             children: [
               SizedBox(
                 height: 15,
               ),
-              Center(
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _handleImageSelection();
-                      },
-                      child: Container(
-                        width: 130,
-                        height: 130,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 3,
-                                color:
-                                Theme.of(context).scaffoldBackgroundColor),
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  color: Colors.black.withOpacity(0.1),
-                                  offset: Offset(0, 10))
-                            ],
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  imageUrl == null
-                                      ?"https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
-                                      : imageUrl,
-                                ))),
-                      ),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: _handleImageSelection,
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage:
+                  NetworkImage(
+                    imageUrl == null
+                        ? AssetImage("assets/images.img.png")
+                        : imageUrl,
+                  ),
+                  radius: 55,
                 ),
               ),
               SizedBox(
@@ -231,9 +188,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+
                   initialValue: myUsername,
                   style: TextStyle(color: Colors.white),
+
                   decoration: InputDecoration(
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(0.0),
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ), // icon is 48px widget.
+                      ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
@@ -261,79 +227,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Container(
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(color: Colors.white)),
                     height: MediaQuery.of(context).size.height/16,
-                    child: Row(children: [Padding(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(" ${user.email}",style:TextStyle(color: Colors.white,),
-                      ),
+                      child: Row(children: [Icon(Icons.email,color: Colors.white,),Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(" ${user.email}",style:TextStyle(color: Colors.white,),
+                        ),
+                      )
+                      ],),
                     )
-                    ],)
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: TextFormField(
-              //     readOnly: true,
-              //     style: TextStyle(color: Colors.white),
-              //     decoration: InputDecoration(
-              //         enabledBorder: OutlineInputBorder(
-              //           borderSide: BorderSide(color: Colors.white),
-              //         ),
-              //         focusedBorder: OutlineInputBorder(
-              //           borderSide: BorderSide(color:Colors.white),
-              //         ),
-              //         border:  OutlineInputBorder(
-              //           borderSide: BorderSide(color: Colors.white),
-              //         ),
-              //         labelText: "${user.email}",
-              //         labelStyle: TextStyle(color: Colors.white),),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.white),
-              //       borderRadius: BorderRadius.circular(5),
-              //     ),
-              //    height: 50,
-              //    width: MediaQuery.of(context).size.width/1,
-              //    child: Padding(
-              //      padding: const EdgeInsets.only(right: 180),
-              //      child: Center(child: Text("${user.email}", style: TextStyle(color: Colors.white),)),
-              //    ),
-              //   ),
-              // ),
 
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Container(
-              //     decoration:
-              //     BoxDecoration(borderRadius: BorderRadius.circular(8)),
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: TextField(
-              //         decoration: InputDecoration(labelText: 'Status'),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               SizedBox(
                 height: 35,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // OutlineButton(
-                  //   padding: EdgeInsets.symmetric(horizontal: 50),
-                  //   shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(20)),
-                  //   onPressed: () {},
-                  //   child: Text("CANCEL",
-                  //       style: TextStyle(
-                  //           fontSize: 14,
-                  //           letterSpacing: 2.2,
-                  //           color: Colors.black)),
-                  // ),
+
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -341,6 +253,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     child: RaisedButton(
                       onPressed: () {
+
                         updateUser();
                       },
                       color: Colors.black,
@@ -358,39 +271,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? showPassword : false,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-              onPressed: () {
-                setState(() {
-                  showPassword = showPassword;
-                });
-              },
-              icon: Icon(
-                Icons.remove_red_eye,
-                color: Colors.grey,
-              ),
-            )
-                : null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
       ),
     );
   }
@@ -412,7 +292,7 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
   String status;
   String myId = '';
   String myUsername = '';
-  String lastName = '';
+
   String imageUrl = '';
   User user = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -432,12 +312,29 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
     });
   }
 
+  bool isImageLoading = false;
   void _handleImageSelection() async {
+    setState(() {
+      isImageLoading = true;
+    });
     final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 1440,
       source: ImageSource.gallery,
+
     );
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: result.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.blueAccent,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
 
     if (result != null) {
       final file = File(result.path);
@@ -446,60 +343,45 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
       try {
         final reference = FirebaseStorage.instance.ref(name);
         await reference.putFile(file);
-        final uri = await reference.getDownloadURL();
-
-        print(uri.toString());
+        final croppedFile = await reference.getDownloadURL();
+        print(croppedFile.toString());
         setState(() {
-          imageUrl = uri;
+          imageUrl = croppedFile;
         });
       } catch (e) {
         print(e);
       }
-
-      // final message = types.PartialImage(
-      //   height: image.height.toDouble(),
-      //   name: name,
-      //   size: size,
-      //   uri: uri,
-      //   width: image.width.toDouble(),
-      // );
-
-      // FirebaseChatCore.instance.sendMessage(
-      //   message,
-      //   widget.room.id,
-      // );
-      //   _setAttachmentUploading(false);
-      // } on FirebaseException catch (e) {
-      //   _setAttachmentUploading(false);
-      //   print(e);
-      // }
+      setState(() {
+        isImageLoading = false;
+      });
     }
   }
 
   void updateUser() async {
-    print(users.doc('${user.uid}'));
+    var updateObject =Map<String, dynamic>();
+    if( name != null) {
+      updateObject['firstName'] = name.toString();
+    }
+    if(imageUrl != null) {
+      updateObject['imageUrl'] = imageUrl.toString();
+    }
     return users
         .doc('${user.uid}')
-        .update({
-      'firstName': '${name.toString()}',
-      'imageUrl': '${imageUrl.toString()}',
-      // 'lastName': '${name.toString()}'
-    })
-        .then((value) {
-      print("Profile has been changed successfully");
-    })
+        .update(updateObject
+      //     {
+      //
+      //   // 'firstName': '${name.toString()}',
+      //   // 'imageUrl': '${imageUrl.toString()}',
+      //   // 'lastName': '${name.toString()}'
+      // }
+    )
+        .then((value) {print("Profile has been changed successfully");})
         .catchError((error) => print("Failed to update user: $error"));
   }
-
   void getCurrentUser() async {
     setState(() {
       try {
         user = (_auth.currentUser);
-        print(user);
-        // print(name);
-        // print(user!.uid);
-        // print(user!.providerData.toString());
-        // print(user!.refreshToken);
       } catch (e) {}
     });
   }
@@ -532,17 +414,7 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
           padding: EdgeInsets.only(left: 16, top: 25, right: 16),
           child: GestureDetector(
             onTap: () {
-              print(myUsername);
-              print(user);
-              print(imageUrl);
-              print(imageUrl);
-              // FocusScope.of(context).unfocus();
-              // print(user);
-              // print(_auth.currentUser!);
-              // print(myUsername);
-              // print(user!.uid);
-              // print(user!.providerData.toString());
-              // print(user!.refreshToken);
+
             },
             child: ListView(
               children: [
@@ -578,7 +450,7 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
                                     imageUrl == null
-                                        ? "https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
+                                        ? AssetImage("assets/images/img.png")
                                         : imageUrl,
                                   ))),
                         ),
@@ -604,6 +476,13 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
                     initialValue: myUsername,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.all(0.0),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ), // icon is 48px widget.
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
@@ -629,21 +508,17 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.white)),
-
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 16,
-                      child: Row(children: [Padding(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(color: Colors.white)),
+                      height: MediaQuery.of(context).size.height/16,
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(" ${user.email}", style: TextStyle(
-                          color: Colors.white,),
-                        ),
+                        child: Row(children: [Icon(Icons.email,color: Colors.white,),Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(" ${user.email}",style:TextStyle(color: Colors.white,),
+                          ),
+                        )
+                        ],),
                       )
-                      ],)
                   ),
                 ),
                 // Padding(
@@ -700,35 +575,27 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // OutlineButton(
-                    //   padding: EdgeInsets.symmetric(horizontal: 50),
-                    //   shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(20)),
-                    //   onPressed: () {},
-                    //   child: Text("CANCEL",
-                    //       style: TextStyle(
-                    //           fontSize: 14,
-                    //           letterSpacing: 2.2,
-                    //           color: Colors.black)),
-                    // ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.white)
-                      ),
-                      child: RaisedButton(
-                        onPressed: () {
+                    GestureDetector(
+                      onTap: (){
                           updateUser();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) => RoomsPage()));
-                        },
-                        color: Colors.black,
-                        child: Text(
-                          "SAVE",
-                          style: TextStyle(
-                              fontSize: 14,
-                              letterSpacing: 2.2,
-                              color: Colors.white),
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.white)
+                        ),
+                        height: MediaQuery.of(context).size.height/28,
+                        width: MediaQuery.of(context).size.width/4,
+                        child: Center(
+                          child: Text(
+                            "SAVE",
+                            style: TextStyle(
+                                fontSize: 14,
+                                letterSpacing: 2.2,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
                     )
@@ -774,5 +641,6 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
       ),
     );
   }
+
 }
 

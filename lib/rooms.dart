@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
@@ -35,71 +36,16 @@ class _RoomsPageState extends State<RoomsPage> {
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
-  String lastName = '';
+
   String imageUrl = '';
 
   @override
   void initState() {
     initializeFlutterFire();
     _getdata();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channel.description,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher',
-              ),
-            ));
-      }
-    });
+    print("hi");
+    print(_getdata);
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null) {
-        showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text(notification.title),
-                content: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text(notification.body)],
-                  ),
-                ),
-              );
-            });
-      }
-    });
-  }
-
-  void showNotification() {
-    setState(() {
-      _counter++;
-    });
-    flutterLocalNotificationsPlugin.show(
-        0,
-        "Testing $_counter",
-        "How you doin ?",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-                channel.id, channel.name, channel.description,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher')));
   }
 
   void _getdata() async {
@@ -114,7 +60,40 @@ class _RoomsPageState extends State<RoomsPage> {
       });
     });
   }
-
+  String createdAt = '';
+ void messageData(types.Room room) async {
+   FirebaseFirestore.instance
+       .collection('rooms/${room.id}/messages').doc(user.uid)
+       .snapshots().listen((userData) {
+         setState(() {
+      createdAt = userData.data()['createdAt'];
+         });
+   });
+   }
+    //   .map(
+      //     (snapshot) {
+      //   return snapshot.docs.fold<List<types.Message>>(
+      //     [],
+      //         (previousValue, element) {
+      //       final data = element.data();
+      //       final author = room.users.firstWhere(
+      //             (u) => u.id == data['authorId'],
+      //         orElse: () => types.User(id: data['authorId'] as String),
+      //       );
+      //
+      //       data['author'] = author.toJson();
+      //       data['id'] = element.id;
+      //       try {
+      //         data['createdAt'] = element['createdAt']?.millisecondsSinceEpoch;
+      //         data['updatedAt'] = element['updatedAt']?.millisecondsSinceEpoch;
+      //       } catch (e) {
+      //         // Ignore errors, null values are ok
+      //       }
+      //       data.removeWhere((key, value) => key == 'authorId');
+      //       return [...previousValue, types.Message.fromJson(data)];
+      //     },
+      //   );
+      // },
 
   void logout() async {
     await FirebaseAuth.instance.signOut();
@@ -137,24 +116,6 @@ class _RoomsPageState extends State<RoomsPage> {
       });
     }
   }
-
-  Future<void> showNotifications() async {
-    setState(() {
-      _counter++;
-    });
-    flutterLocalNotificationsPlugin.show(
-        0,
-        "Testing $_counter",
-        "How you doing ?",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-                channel.id, channel.name, channel.description,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher')));
-  }
-
 
   Widget _buildAvatar(types.Room room) {
     var color = Colors.white;
@@ -183,7 +144,7 @@ class _RoomsPageState extends State<RoomsPage> {
         child: room.imageUrl == null
             ? Text(
           name.isEmpty ? '' : name[0].toUpperCase(),
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.black),
         )
             : null,
       ),
@@ -204,7 +165,7 @@ class _RoomsPageState extends State<RoomsPage> {
       onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: Colors.black,
-        floatingActionButton: _user == null
+        floatingActionButton:  _user == null
             ? null
             : FloatingActionButton(
           onPressed: () {
@@ -254,35 +215,44 @@ class _RoomsPageState extends State<RoomsPage> {
               //   },
               // ),
               IconButton(
+                icon: const Icon(Icons.settings),
+                  onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return EditProfilePage();
+                  }));
+                  },
+                // onPressed: _user == null ? null : logout,
+              ),
+              IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: _user == null ? null : logout,
+                // onPressed: _user == null ? null : logout,
               )
             ],
             brightness: Brightness.dark,
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => EditProfilePage(),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 5.0,
-                  backgroundImage: NetworkImage(
-                    imageUrl == null
-                        ? "https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
-                        : imageUrl,
-                  ),
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-            ),
-            centerTitle: true,
-            title: Text('OTM'),
+            // leading:   Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       Navigator.of(context).push(
+            //         MaterialPageRoute(
+            //           fullscreenDialog: true,
+            //           builder: (context) => EditProfilePage(),
+            //         ),
+            //       );
+            //     },
+            //     child: CircleAvatar(
+            //       radius: 5.0,
+            //       backgroundImage: NetworkImage(
+            //         imageUrl == null
+            //             ? "https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
+            //             : imageUrl,
+            //       ),
+            //       backgroundColor: Colors.transparent,
+            //     ),
+            //   ),
+            // ),
+          //  centerTitle: true,
+            title:  Text('OTM'),
           ),
         ),
 
@@ -295,17 +265,14 @@ class _RoomsPageState extends State<RoomsPage> {
             children: [
               Image.asset(
                 'assets/images/Welcome.png',
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 2,
+                height:MediaQuery.of(context).size.height/2,
               ),
               GestureDetector(
-                onTap: () {
+                onTap: (){
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       fullscreenDialog: true,
-                      builder: (context) => LoginPage(),
+                      builder: (context) =>  LoginPage(),
                     ),
                   );
                 },
@@ -314,18 +281,9 @@ class _RoomsPageState extends State<RoomsPage> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.blue
                   ),
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 15,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 1.5,
-                  child: Center(child: Text("Welcome", style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25),)),
+                  height: MediaQuery.of(context).size.height/15,
+                  width: MediaQuery.of(context).size.width/1.5,
+                  child: Center(child: Text("Welcome",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25),)),
                 ),
               )
               // TextButton(
@@ -355,8 +313,7 @@ class _RoomsPageState extends State<RoomsPage> {
                   margin: const EdgeInsets.only(
                     bottom: 200,
                   ),
-                  child: const Text(
-                    'No rooms', style: TextStyle(color: Colors.white),),
+                  child: const Text('No rooms',style: TextStyle(color: Colors.white),),
                 );
               }
 
@@ -364,30 +321,40 @@ class _RoomsPageState extends State<RoomsPage> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   final room = snapshot.data[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ChatPage(
+                  print(room.lastMessages.toString());
+                  print(createdAt.toString());
+                  return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ChatPage(
                                 room: room,
                               ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          _buildAvatar(room),
-                          Text(
-                            room.name ?? 'User Name Not Available',
-                            style: TextStyle(color: Colors.white),
-
+                            ),
+                          );
+                        },
+                        child: Card(
+                          color: Colors.transparent,
+                          child: Row(
+                            children: [
+                           //   messageData(room),
+                              _buildAvatar(room),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${room.lastMessages != null ? room.lastMessages[0] : ""}".toString(),style: TextStyle(color: Colors.white)),
+                                  Text(
+                                    room.name ?? 'User Name Not Available',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
+                                  ),
+                                //  Text(widget.lastMessage,style: TextStyle(color:Colors.grey,),)
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
                   );
                 },
               );
