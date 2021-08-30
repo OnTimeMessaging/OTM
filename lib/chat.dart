@@ -16,7 +16,7 @@ import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'Call/jitsiCall.dart';
+
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -39,39 +39,49 @@ class _ChatPageState extends State<ChatPage> {
       builder: (BuildContext context) {
         return SafeArea(
           child: SizedBox(
-           height: 144,
+           height: 140,
             child: Container(
-              color: Colors.grey,
+              color: Colors.black,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _handleImageSelection();
-                    },
-                    child: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Photo',style: TextStyle(color: Colors.white),),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _handleFileSelection();
-                    },
-                    child: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('File'),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Cancel'),
-                    ),
-                  ),
+                  IconButton(onPressed: (){
+                    Navigator.pop(context);
+                    _handleImageSelection();
+                  },
+                  icon: Icon(Icons.photo,color: Colors.white,size: 30,),),
+                  IconButton(onPressed: (){
+                    Navigator.pop(context);
+                    _handleFileSelection();
+                  },
+                    icon: Icon(Icons.attach_file_sharp,color: Colors.white,size: 30,),),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.pop(context);
+                  //     _handleImageSelection();
+                  //   },
+                  //   child: const Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Text('Photo'),
+                  //   ),
+                  // ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.pop(context);
+                  //     _handleFileSelection();
+                  //   },
+                  //   child: const Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Text('File'),
+                  //   ),
+                  // ),
+                  // TextButton(
+                  //   onPressed: () => Navigator.pop(context),
+                  //   child: const Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Text('Cancel'),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
