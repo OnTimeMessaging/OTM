@@ -42,50 +42,38 @@ class _ChatPageState extends State<ChatPage> {
            height: 144,
             child: Container(
               color: Colors.grey,
-              child: Row(
-                children: [
-                  IconButton(onPressed: (){
-                    Navigator.pop(context);
-                    _handleImageSelection();
-                  }, icon: Icon(Icons.photo,size: 30,)),
-                  IconButton(onPressed: (){
-                    Navigator.pop(context);
-                             _handleFileSelection();
-                  }, icon: Icon(Icons.attach_file))
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _handleImageSelection();
+                    },
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Photo',style: TextStyle(color: Colors.white),),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _handleFileSelection();
+                    },
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('File'),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Cancel'),
+                    ),
+                  ),
                 ],
               ),
-              // child: Column(
-              //   crossAxisAlignment: CrossAxisAlignment.stretch,
-              //   children: <Widget>[
-              //     TextButton(
-              //       onPressed: () {
-              //         Navigator.pop(context);
-              //         _handleImageSelection();
-              //       },
-              //       child: const Align(
-              //         alignment: Alignment.centerLeft,
-              //         child: Text('Photo',style: TextStyle(color: Colors.white),),
-              //       ),
-              //     ),
-              //     TextButton(
-              //       onPressed: () {
-              //         Navigator.pop(context);
-              //         _handleFileSelection();
-              //       },
-              //       child: const Align(
-              //         alignment: Alignment.centerLeft,
-              //         child: Text('File'),
-              //       ),
-              //     ),
-              //     TextButton(
-              //       onPressed: () => Navigator.pop(context),
-              //       child: const Align(
-              //         alignment: Alignment.centerLeft,
-              //         child: Text('Cancel'),
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ),
           ),
         );
