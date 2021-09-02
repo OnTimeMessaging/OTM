@@ -27,6 +27,7 @@ dependencies:
   jitsi_meet: any
 #  contact_picker: any
   permission_handler: any
+  flutter_spinkit: any
 #  android_intent: any
   font_awesome_flutter: any
   is_lock_screen: any
@@ -36,6 +37,7 @@ dependencies:
   firebase_core: any
   firebase_auth: any
   flutter_firebase_chat_core: any
+  timeago: any
   sqflite: any
   flutter_local_notifications: any
   shared_preferences: any

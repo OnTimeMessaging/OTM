@@ -199,10 +199,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child:  RaisedButton(
-        child: TextButton(
-                  onPressed: _loggingIn ? null : _login,
-                  child: const Text('Login'),
-                ),
+        child: const Text('Login'),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -292,7 +289,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             TextSpan(
-              text: 'Sign Up',
+              text: 'Register',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,

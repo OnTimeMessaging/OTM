@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,14 +11,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:ontimemessaging/SignUp.dart';
 import 'package:ontimemessaging/Users.dart';
-import 'package:ontimemessaging/db/screen.dart';
-import 'package:ontimemessaging/main.dart';
 import 'package:ontimemessaging/profile.dart';
 import 'package:ontimemessaging/utils.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'Login.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
+import 'New DB/SchedulePGE.dart';
 import 'chat.dart';
 
 class RoomsPage extends StatefulWidget {
@@ -28,26 +29,20 @@ class RoomsPage extends StatefulWidget {
 
 class _RoomsPageState extends State<RoomsPage> {
   bool _error = false;
-  int _counter = 0;
   bool _initialized = false;
   User _user;
   User user = FirebaseAuth.instance.currentUser;
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
+      FlutterLocalNotificationsPlugin();
   String imageUrl = '';
 
   @override
   void initState() {
     initializeFlutterFire();
     _getdata();
-    print("hi");
-    print(_getdata);
-
   }
-
+bool _userLoading = false;
   void _getdata() async {
     User user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -56,44 +51,51 @@ class _RoomsPageState extends State<RoomsPage> {
         .snapshots()
         .listen((userData) {
       setState(() {
-        imageUrl = userData.data()['imageUrl'];
+        imageUrl = userData.data()['imageUrl'].toString();
       });
     });
   }
+
   String createdAt = '';
- void messageData(types.Room room) async {
-   FirebaseFirestore.instance
-       .collection('rooms/${room.id}/messages').doc(user.uid)
-       .snapshots().listen((userData) {
-         setState(() {
-      createdAt = userData.data()['createdAt'];
-         });
-   });
-   }
-    //   .map(
-      //     (snapshot) {
-      //   return snapshot.docs.fold<List<types.Message>>(
-      //     [],
-      //         (previousValue, element) {
-      //       final data = element.data();
-      //       final author = room.users.firstWhere(
-      //             (u) => u.id == data['authorId'],
-      //         orElse: () => types.User(id: data['authorId'] as String),
-      //       );
-      //
-      //       data['author'] = author.toJson();
-      //       data['id'] = element.id;
-      //       try {
-      //         data['createdAt'] = element['createdAt']?.millisecondsSinceEpoch;
-      //         data['updatedAt'] = element['updatedAt']?.millisecondsSinceEpoch;
-      //       } catch (e) {
-      //         // Ignore errors, null values are ok
-      //       }
-      //       data.removeWhere((key, value) => key == 'authorId');
-      //       return [...previousValue, types.Message.fromJson(data)];
-      //     },
-      //   );
-      // },
+
+  Future<String> TimeData(types.Room room) async {
+    var time;
+    await FirebaseFirestore.instance
+        .collection('rooms/${room.id}/messages')
+        .orderBy('createdAt', descending: true)
+        .limit(1)
+        .get()
+        .then((value) {
+      print(value.docs[0].data());
+      if (value.docs != null && value.docs.length > 0) {
+        time = (value.docs[0].data()['updatedAt']).toDate().toString();
+      } else {
+        time = '';
+      }
+    });
+    print("time");
+    print(time);
+    return time;
+  }
+
+  Future<String> messageData(types.Room room) async {
+    var message;
+    await FirebaseFirestore.instance
+        .collection('rooms/${room.id}/messages')
+        .orderBy('createdAt', descending: true)
+        .limit(1)
+        .get()
+        .then((value) {
+      print(value.docs[0].data());
+      if (value.docs != null && value.docs.length > 0) {
+        message = value.docs[0].data()['text'];
+      } else {
+        message = '';
+      }
+    });
+    print(message);
+    return message;
+  }
 
   void logout() async {
     await FirebaseAuth.instance.signOut();
@@ -117,35 +119,87 @@ class _RoomsPageState extends State<RoomsPage> {
     }
   }
 
+  Widget _time(types.Room room) {
+    return FutureBuilder(
+      future: TimeData(room),
+      builder:
+          (BuildContext context, AsyncSnapshot<String> messageTimeSnapshot) {
+        Widget MessageTime;
+        print(messageTimeSnapshot.toString());
+        if (messageTimeSnapshot.connectionState == ConnectionState.done) {
+          MessageTime = Text(
+            (messageTimeSnapshot.data).toString(),
+            style: TextStyle(color: Colors.white),
+          );
+        } else {
+          MessageTime = Text("");
+          // widget = Container(
+          //   color: Colors.white,
+          //   child: Center(
+          //     child: CircularProgressIndicator(),
+          //   ),
+          // );
+        }
+        return MessageTime;
+      },
+    );
+  }
+
+  Widget _resentMessage(types.Room room) {
+    return FutureBuilder(
+      future: messageData(room),
+      builder: (BuildContext context, AsyncSnapshot<String> messageSnapshot) {
+        Widget LastMess;
+        print("askdh");
+        print(messageSnapshot.toString());
+        if (messageSnapshot.connectionState == ConnectionState.done) {
+          LastMess = Text(
+            messageSnapshot.data.toString(),
+            style: TextStyle(color: Color(0xffB3ACA8), fontSize: 15),
+          );
+        } else {
+          LastMess = Text("");
+          // widget = Container(
+          //   color: Colors.white,
+          //   child: Center(
+          //     child: CircularProgressIndicator(),
+          //   ),
+          // );
+        }
+        print("jkb");
+        print(LastMess);
+
+        return LastMess;
+      },);
+  }
+
   Widget _buildAvatar(types.Room room) {
     var color = Colors.white;
 
     if (room.type == types.RoomType.direct) {
       try {
         final otherUser = room.users.firstWhere(
-              (u) => u.id != _user.uid,
+          (u) => u.id != _user.uid,
         );
         color = getUserAvatarNameColor(otherUser);
       } catch (e) {
         // Do nothing if other user is not found
       }
     }
-
-    // final hasImage = room.imageUrl;
     final name = room.name ?? '';
-    print(room.imageUrl);
+
     return Container(
       margin: const EdgeInsets.only(right: 16),
       child: CircleAvatar(
         backgroundColor: color,
-        radius: 20,
+        radius: 25,
         backgroundImage:
-        room.imageUrl != null ? NetworkImage(room.imageUrl) : null,
+            room.imageUrl != null ? NetworkImage(room.imageUrl) : null,
         child: room.imageUrl == null
             ? Text(
-          name.isEmpty ? '' : name[0].toUpperCase(),
-          style: const TextStyle(color: Colors.black),
-        )
+                name.isEmpty ? '' : name[0].toUpperCase(),
+                style: const TextStyle(color: Colors.black, fontSize: 10),
+              )
             : null,
       ),
     );
@@ -153,6 +207,8 @@ class _RoomsPageState extends State<RoomsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color getRandomColor() =>
+        Colors.primaries[Random().nextInt(Colors.primaries.length)];
     if (_error) {
       return Container();
     }
@@ -164,203 +220,169 @@ class _RoomsPageState extends State<RoomsPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Colors.black,
-        floatingActionButton:  _user == null
+        backgroundColor: Color(0xff3B3940),
+        floatingActionButton: _user == null
             ? null
             : FloatingActionButton(
-          onPressed: () {
-            //   showNotifications();
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return UsersPage();
-            }));
-          },
-          child: Icon(Icons.chat),
-        ),
-
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return UsersPage();
+                  }));
+                },
+                child: Icon(Icons.chat),
+              ),
         appBar: _user == null
             ? null
-            : PreferredSize(
-          preferredSize: Size.fromHeight(75.0),
-          child: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.black,
-            actions: [
-              // IconButton(
-              //   icon: const Icon(Icons.alarm),
-              //   onPressed: _user == null
-              //       ? null
-              //       : () {
-              //
-              //           Navigator.of(context).push(
-              //             MaterialPageRoute(
-              //               fullscreenDialog: true,
-              //               builder: (context) => SheduleScreen(),
-              //             ),
-              //           );
-              //         },
-              // ),
+            : AppBar(
+                brightness: Brightness.dark,
+                elevation: 1,
+                backgroundColor: Color(0xff3B3940),
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.alarm),
+                    onPressed: _user == null
+                        ? null
+                        : () {
 
-
-              // IconButton(
-              //   icon: const Icon(Icons.account_circle),
-              //   onPressed: _user == null
-              //       ? null
-              //       : () {
-              //     Navigator.of(context).push(
-              //       MaterialPageRoute(
-              //         fullscreenDialog: true,
-              //         builder: (context) => EditProfilePage(),
-              //       ),
-              //     );
-              //   },
-              // ),
-              IconButton(
-                icon: const Icon(Icons.settings),
-                  onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return EditProfilePage();
-                  }));
-                  },
-                // onPressed: _user == null ? null : logout,
-              ),
-              IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: _user == null ? null : logout,
-                // onPressed: _user == null ? null : logout,
-              )
-            ],
-            brightness: Brightness.dark,
-            // leading:   Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       Navigator.of(context).push(
-            //         MaterialPageRoute(
-            //           fullscreenDialog: true,
-            //           builder: (context) => EditProfilePage(),
-            //         ),
-            //       );
-            //     },
-            //     child: CircleAvatar(
-            //       radius: 5.0,
-            //       backgroundImage: NetworkImage(
-            //         imageUrl == null
-            //             ? "https://bethanychurch.org.uk/wp-content/uploads/2018/09/profile-icon-png-black-6.png"
-            //             : imageUrl,
-            //       ),
-            //       backgroundColor: Colors.transparent,
-            //     ),
-            //   ),
-            // ),
-          //  centerTitle: true,
-            title:  Text('OTM'),
-          ),
-        ),
-
-        body: _user == null
-            ? Container(
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/Welcome.png',
-                height:MediaQuery.of(context).size.height/2,
-              ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) =>  LoginPage(),
-                    ),
-                  );
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.blue
-                  ),
-                  height: MediaQuery.of(context).size.height/15,
-                  width: MediaQuery.of(context).size.width/1.5,
-                  child: Center(child: Text("Welcome",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25),)),
-                ),
-              )
-              // TextButton(
-              //   onPressed: () {
-              //     Navigator.of(context).push(
-              //       MaterialPageRoute(
-              //         fullscreenDialog: true,
-              //         builder: (context) =>  LoginPage(),
-              //       ),
-              //     );
-              //   },
-              //   child: const Text('Welcome'),
-              // ),
-            ],
-          ),
-        )
-
-            : Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder<List<types.Room>>(
-            stream: FirebaseChatCore.instance.rooms(),
-            initialData: const [],
-            builder: (context, snapshot) {
-              if (!snapshot.hasData || snapshot.data.isEmpty) {
-                return Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(
-                    bottom: 200,
-                  ),
-                  child: const Text('No rooms',style: TextStyle(color: Colors.white),),
-                );
-              }
-
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  final room = snapshot.data[index];
-                  print(room.lastMessages.toString());
-                  print(createdAt.toString());
-                  return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChatPage(
-                                room: room,
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) =>  SchedulePage(),
                               ),
-                            ),
-                          );
-                        },
-                        child: Card(
-                          color: Colors.transparent,
-                          child: Row(
-                            children: [
-                           //   messageData(room),
-                              _buildAvatar(room),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("${room.lastMessages != null ? room.lastMessages[0] : ""}".toString(),style: TextStyle(color: Colors.white)),
-                                  Text(
-                                    room.name ?? 'User Name Not Available',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),
-                                  ),
-                                //  Text(widget.lastMessage,style: TextStyle(color:Colors.grey,),)
-                                ],
-                              ),
-                            ],
-                          ),
+                            );
+                          },
+                  ),
+
+                  IconButton(
+                    icon: const Icon(Icons.account_circle),
+                    onPressed: _user == null
+                        ? null
+                        : () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => EditProfilePage(),
                         ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        showMenu(
+                          context: context,
+                          elevation: 10.0,
+                          color: Color(0xff3B3940),
+                          position: RelativeRect.fromLTRB(25.0, 85.0, 0.0, 0.0),
+                          items: [ PopupMenuItem(
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return SchedulePage();
+                                      }));
+                                },
+                                child: Container(
+                                    child: Text("Schedule",
+                                        style: TextStyle(
+                                            color: Color(0xffEAEAEA))))),
+                          ),
+                            PopupMenuItem(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return EditProfilePage();
+                                    }));
+                                  },
+                                  child: Container(
+                                      child: Text("Profile",
+                                          style: TextStyle(
+                                              color: Color(0xffEAEAEA))))),
+                            ),
+                            PopupMenuItem(
+                              child: GestureDetector(
+                                  onTap: _user == null ? null : logout,
+                                  child: Container(
+                                      child: Text("LogOut",
+                                          style: TextStyle(
+                                              color: Color(0xffEAEAEA))))),
+                            ),
+                          ],
+                        );
+                      },
+                      icon: Icon(Icons.more_vert))
+                ],
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'OTM',
+                    style: TextStyle(
+                        color: Color(0xffEAEAEA),
+                        fontWeight: FontWeight.bold,
+                        fontSize: MediaQuery.of(context).size.height / 40),
+                  ),
+                ),
+              ),
+        body: _user == null
+            ? SplashScreen(
+                seconds: 3,
+                navigateAfterSeconds: LoginPage(),
+               loadingText: Text("Get connected to friends with OTM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10),),
+                title: Text("OTM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 100),),
+                // navigateAfterSeconds: new AfterSplash(),
+                backgroundColor: Color(0xff3B3940),
+            )
+            : StreamBuilder<List<types.Room>>(
+                stream: FirebaseChatCore.instance.rooms(),
+                initialData: const [],
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    return Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(
+                        bottom: 200,
                       ),
+                      child: const Text(
+                        'No chats yet. \n Get started by messaging a friend',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      final room = snapshot.data[index];
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ChatPage(
+                                    room: room,
+                                  ),
+                                ),
+                              );
+                            },
+                            title: Text(
+                              room.name ?? 'User Name Not Available',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xffEAEAEA),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            leading: _buildAvatar(room),
+                            subtitle: _resentMessage(room),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
-              );
-            },
-          ),
-        ),
+              ),
       ),
     );
   }

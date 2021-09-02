@@ -202,14 +202,12 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child:  RaisedButton(
-        child: TextButton(
-          onPressed:   _registering ? null : _register,
-          child: const Text('Sign Up'),
-        ),
+        onPressed: _registering ? null : _register,
+        child: Text("Register"),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        color: Colors.white, onPressed: () {  },
+        color: Colors.white,
 
       ),
     );
@@ -222,10 +220,10 @@ class _RegisterPageState extends State<RegisterPage> {
           builder: (context) =>
               AlertDialog(title: Text('Are you sure you want to quit?'), actions: <Widget>[
                 RaisedButton(
-                    child: Text('sign out'),
+                    child: Text('Yes'),
                     onPressed: () => Navigator.of(context).pop(true)),
                 RaisedButton(
-                    child: Text('cancel'),
+                    child: Text('No'),
                     onPressed: () => Navigator.of(context).pop(false)),
               ])),
       child: Scaffold(

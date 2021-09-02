@@ -36,14 +36,15 @@ class _ChatPageState extends State<ChatPage> {
   void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return SafeArea(
           child: SizedBox(
            height: 140,
             child: Container(
-              color: Colors.black,
+              color: Colors.transparent,
               child: Padding(
-                padding: const EdgeInsets.only(left: 50.0),
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -283,9 +284,12 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: Color(0xff3B3940),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        shape:RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)
+        ),
+        backgroundColor:Color(0xff3B3940),
         title: Text(widget.room.name),
           actions: [
           IconButton(

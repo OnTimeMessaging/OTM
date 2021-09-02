@@ -8,10 +8,9 @@ import 'chat.dart';
 
 class UsersPage extends StatelessWidget {
 
-
+  bool _userLoading = false;
   void _handlePressed(types.User otherUser, BuildContext context) async {
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
-
     Navigator.of(context).pop();
     await Navigator.of(context).push(
       MaterialPageRoute(
@@ -32,7 +31,7 @@ class UsersPage extends StatelessWidget {
       child: CircleAvatar(
         backgroundColor: color,
         backgroundImage: hasImage ? NetworkImage(user.imageUrl) : null,
-        radius: 20,
+        radius: 25,
         child: !hasImage
             ? Text(
           name.isEmpty ? '' : name[0].toUpperCase(),
@@ -46,9 +45,9 @@ class UsersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.black,
+      backgroundColor: Color(0xff3B3940),
       appBar: AppBar(
-        backgroundColor:Colors.black,
+        backgroundColor: Color(0xff3B3940),
         brightness: Brightness.dark,
         title: const Text('Users'),
       ),
@@ -65,27 +64,19 @@ class UsersPage extends StatelessWidget {
               child: const Text('No users',style: TextStyle(color: Colors.white),),
             );
           }
-
+          // _handlePressed(user, context);
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
               final user = snapshot.data[index];
-
-              return GestureDetector(
-                onTap: () {
-                  _handlePressed(user, context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    children: [
-                      _buildAvatar(user),
-                      Text(getUserName(user),style: TextStyle(color: Colors.white),),
-                    ],
-                  ),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  onTap: (){
+                    _handlePressed(user, context);
+                  },
+                  leading:  _buildAvatar(user),
+                  title: Text(getUserName(user),style: TextStyle(fontSize:20,color:Color(0xffEAEAEA),fontWeight: FontWeight.w700),)
                 ),
               );
             },
