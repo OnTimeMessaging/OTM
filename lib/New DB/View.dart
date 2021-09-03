@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ontimemessaging/New%20DB/MessageClass.dart';
 
+import 'ViewMessage.dart';
 import 'datetime.dart';
 
 class Schedule extends StatefulWidget {
@@ -82,9 +83,9 @@ class _ScheduleState extends State<Schedule> {
             child: */
             ListTile(
               isThreeLine: true,
-             // leading: Icon(getIcon(message.driver)),
-          //    title:
-           //   Text(_numberNameMapper[message.endpoint] ?? message.endpoint),
+
+             title:
+             Text(_numberNameMapper[message.subject] ?? message.subject),
               subtitle: Text(
                 message.content.substring(0,
                     message.content.length > maxMsgLen ? maxMsgLen : null) +
@@ -106,16 +107,16 @@ class _ScheduleState extends State<Schedule> {
                         DateTime.fromMillisecondsSinceEpoch(message.executedAt),
                         units: 1))
                   ]),
-              // onTap: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute<bool>(
-              //         builder: (context) => ViewMessage(message)),
-              //   ).then((bool result) {
-              //     _listChanged();
-              //   });
-          //    },
-              //   )
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<bool>(
+                      builder: (context) => ViewMessage(message)),
+                ).then((bool result) {
+                  _listChanged();
+                });
+             },
+
             );
         });
   }

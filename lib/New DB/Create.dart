@@ -35,7 +35,7 @@ class _CreateOrEditSmsMessagePageState
   final _messagesAdd = MessageAdd();
   DateTime _date;
   TimeOfDay _time;
-
+final _author =TextEditingController();
   final _dateCtrl = TextEditingController();
   final _timeCtrl = TextEditingController();
   final _messageCtrl = TextEditingController();
@@ -50,7 +50,7 @@ class _CreateOrEditSmsMessagePageState
   String _dateError;
   String _timeError;
   String _messageError;
-
+   String _authorError;
 
   void getLocalPreferences() async {
     prefs = await SharedPreferences.getInstance();
@@ -70,16 +70,17 @@ class _CreateOrEditSmsMessagePageState
       _timeCtrl.text = DateTimeFormator.formatTime(TimeOfDay.fromDateTime(
           DateTime.fromMillisecondsSinceEpoch(widget.message.executedAt)));
       _messageCtrl.text = widget.message.content;
+      _author.text = widget.message.subject;
       _date = DateTime.fromMillisecondsSinceEpoch(widget.message.executedAt);
       _time = TimeOfDay.fromDateTime(
           DateTime.fromMillisecondsSinceEpoch(widget.message.executedAt));
     } else {
-
+      _author.text = '';
       _dateCtrl.text = '';
       _timeCtrl.text = '';
       _messageCtrl.text = '';
     }
-
+_author.addListener(_validate);
     _messageCtrl.addListener(_validate);
     _dateCtrl.addListener(_validate);
     _timeCtrl.addListener(_validate);
@@ -110,7 +111,18 @@ class _CreateOrEditSmsMessagePageState
           padding: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 15),
           child: ListView(
             children: <Widget>[
-
+              TextFormField(
+                controller: _author,
+                maxLines: null,
+                // maxLength: _settings.sms.maxSmsCount * SmsSettings.maxSmsLength,
+                keyboardType: TextInputType.multiline,
+                decoration: InputDecoration(
+                  // errorText: _messageError,
+                    labelStyle: TextStyle(
+                        fontSize: SizeConfig.safeBlockHorizontal * 3.5),
+                    labelText: 'Message',
+                    icon: Icon(Icons.person)),
+              ),
               // TextFormField(
               //   controller: _dateCtrl,
               //   inputFormatters: [
@@ -198,33 +210,6 @@ class _CreateOrEditSmsMessagePageState
                   ),
                 ),
               ),
-              // TextFormField(
-              //   controller: _timeCtrl,
-              //   inputFormatters: [
-              //     BlacklistingTextInputFormatter(RegExp(r".*"))
-              //   ],
-              //   keyboardType: TextInputType.datetime,
-              //   decoration: InputDecoration(
-              //       labelText: 'Time',
-              //       errorText: _timeError,
-              //
-              //       labelStyle: TextStyle(
-              //           fontSize: SizeConfig.safeBlockHorizontal * 3.5),
-              //       icon: Icon(Icons.access_time),
-              //       suffixIcon: GestureDetector(
-              //         child: Icon(Icons.more_horiz),
-              //         onTap: () async {
-              //           final TimeOfDay time = await showTimePicker(
-              //               context: context,
-              //               initialTime: TimeOfDay.fromDateTime(
-              //                   DateTime.now().add(Duration(minutes: 2))));
-              //           _time = time;
-              //           setState(() {
-              //             _timeCtrl.text = _time.format(context);
-              //           });
-              //         },
-              //       )),
-              // ),
               Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -323,6 +308,7 @@ class _CreateOrEditSmsMessagePageState
 
   bool _validate() {
     bool status = true;
+    _authorError = null;
     _messageError = null;
     _dateError = null;
     _timeError = null;
@@ -340,7 +326,10 @@ class _CreateOrEditSmsMessagePageState
       status = false;
       _timeError = 'Select a time.';
     }
-
+    if (_author.text.trim().isEmpty) {
+      status = false;
+      _authorError = 'Wrong User.';
+    }
     return status;
   }
 
@@ -349,6 +338,7 @@ class _CreateOrEditSmsMessagePageState
       ? Messageclass(
       id: widget?.message?.id,
       content: _messageCtrl.text,
+      subject: _author.text,
       createdAt: widget?.message?.createdAt ??
           DateTime.now().millisecondsSinceEpoch,
       attempts: widget?.message?.attempts ?? 0,
@@ -360,7 +350,7 @@ class _CreateOrEditSmsMessagePageState
       : Messageclass(
       id: widget?.message?.id,
       content: _messageCtrl.text,
-      subject: '',
+      subject: _author.text,
       createdAt: widget?.message?.createdAt ??
           DateTime.now().millisecondsSinceEpoch,
       attempts: widget?.message?.attempts ?? 0,

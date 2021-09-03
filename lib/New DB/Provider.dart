@@ -68,13 +68,6 @@ class MessageProviders {
           isArchived INTEGER
         );
       ''');
-
-      /*await tx.execute('''CREATE TABLE $_tblMessageExecutions (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          message_id INTEGER,
-          status INTEGER
-        );
-      '''); */
     });
   }
 
@@ -98,10 +91,6 @@ class MessageProviders {
               'WHERE id = ?',
           [messageId]);
 
-      /*await tx.rawDelete('''
-        DELETE FROM $_tblMessageExecutions
-        WHERE id = $messageId;
-      ''');*/
     });
 
     return r != 0;
@@ -156,8 +145,6 @@ class MessageProviders {
 
     return i >= 1;
   }
-
-  /// Gets a message using its id.
   Future<Messageclass> getMessage(int id) async {
     Database db = await _init();
     _database ??= db;
@@ -171,8 +158,6 @@ class MessageProviders {
       return Messageclass.fromJson(rows[0]);
     }
   }
-
-  /// Gets the messages.
   Future<List<Messageclass>> getMessages(
       {MessageStatus status, int count, String order}) async {
     String where = '';
@@ -204,12 +189,10 @@ class MessageProviders {
   Future<List<Messageclass>> getPendingMessages({int count}) =>
       getMessages(status: MessageStatus.PENDING, count: count);
 
-  /// Empties the tables.
   Future<bool> deleteAllMessages() {
     return truncateTables();
   }
 
-  /// Frees the database resources.
   void dispose() {
     if (_database != null && _database.isOpen) {
       debugPrint('on close database');

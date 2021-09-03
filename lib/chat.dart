@@ -172,10 +172,7 @@ class _ChatPageState extends State<ChatPage> {
       try {
         user = ( _auth.currentUser);
         print(user);
-        // print(name);
-        // print(user!.uid);
-        // print(user!.providerData.toString());
-        // print(user!.refreshToken);
+
       } catch (e) {}
     });
   }
@@ -290,7 +287,7 @@ class _ChatPageState extends State<ChatPage> {
             borderRadius: BorderRadius.circular(10)
         ),
         backgroundColor:Color(0xff3B3940),
-        title: Text(widget.room.name),
+        title: Text(widget.room.name == null ? "Chat":widget.room.name),
           actions: [
           IconButton(
           icon: const Icon(Icons.call,color: Colors.white,),

@@ -261,7 +261,8 @@ class _SchedulePageState extends State<SchedulePage>
             tabs: const <Widget>[
               Tab(icon: Icon(Icons.all_inclusive, size: _iconSize)),
               Tab(icon: Icon(Icons.schedule, size: _iconSize)),
-
+              Tab(icon: Icon(Icons.all_inclusive, size: _iconSize)),
+              Tab(icon: Icon(Icons.schedule, size: _iconSize)),
             ],
           )),
       //   drawer: AppDrawer(),
