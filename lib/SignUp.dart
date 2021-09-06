@@ -26,9 +26,8 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     super.initState();
     final faker = Faker();
-    _firstName = faker.person.firstName();
-    _email =
-    '${_firstName.toLowerCase()}@${faker.internet.domainName()}';
+    _firstName ='';
+    _email ='';
     _focusNode = FocusNode();
     _passwordController = TextEditingController(text: 'Qawsed1-');
     _usernameController = TextEditingController(
@@ -240,7 +239,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Colors.black, Color(0xff000428)])
+                          colors: [ Color(0xff3B3940), Color(0xff3B3940)])
 
                   ),
                 ),

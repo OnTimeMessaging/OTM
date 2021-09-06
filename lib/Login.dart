@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ontimemessaging/rooms.dart';
 
 import 'SignUp.dart';
 
@@ -44,7 +45,11 @@ class _LoginPageState extends State<LoginPage> {
         email: _usernameController.text,
         password: _passwordController.text,
       );
-      Navigator.of(context).pop();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => RoomsPage()
+        ),
+      );
     } catch (e) {
       setState(() {
         _loggingIn = false;
@@ -318,7 +323,7 @@ class _LoginPageState extends State<LoginPage> {
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Colors.black, Color(0xff000428)])
+                    colors: [ Color(0xff3B3940),Color(0xff3B3940)])
 
                 ),
               ),

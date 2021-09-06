@@ -93,6 +93,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   // }
 bool isLoading=false;
   Future<void> _getUserName() async {
+    setState(() {
+      isLoading = false;
+    });
     User user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
         .collection('users')
@@ -152,28 +155,31 @@ bool isLoading=false;
       _isImage = false;
     });
   }
-  void _handleImageSelection() async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 1440,
-      source: ImageSource.gallery,
-    );
-
-    if (result != null) {
-      final file = File(result.path);
-      final name = result.name;
-      try {
-        final reference = FirebaseStorage.instance.ref(name);
-        await reference.putFile(file);
-        final uri = await reference.getDownloadURL();
-        setState(() {
-          imageUrl = uri;
-        });
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
+  // void _handleImageSelection() async {
+  //   final result = await ImagePicker().pickImage(
+  //     imageQuality: 70,
+  //     maxWidth: 1440,
+  //     source: ImageSource.gallery,
+  //   );
+  //
+  //   if (result != null) {
+  //     final file = File(result.path);
+  //     final name = result.name;
+  //     try {
+  //       final reference = FirebaseStorage.instance.ref(name);
+  //       await reference.putFile(file);
+  //       final uri = await reference.getDownloadURL();
+  //       setState(() {
+  //         imageUrl = uri;
+  //       });
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   }
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
 
   void logout() async {
     await FirebaseAuth.instance.signOut();
@@ -194,23 +200,29 @@ bool isLoading=false;
     ).then((value) {
       Fluttertoast.showToast(
           msg: "Done",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER_LEFT,
           timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0
       );
+      setState(() {
+        _isImage =false;
+      });
     })
         .catchError((error) => print("Failed to update user: $error"));
+
   }
 
   void getCurrentUser() async {
     setState(() {
+      isLoading = false;
       try {
         user = _auth.currentUser;
       } catch (e) {}
     });
+
   }
 
 
@@ -261,35 +273,71 @@ bool isLoading=false;
                     SizedBox(
                       height: 15,
                     ),
-                    Center(
-                      child: Stack(
-                          children: [GestureDetector(
-                          onTap: (){
-                            _imagePick();
-                          },
-                          child: CircleAvatar(
-                            radius: 55,
-                            child: imageUrl == null ? Icon(Icons.person) : null,
-                            backgroundImage:
-                            imageUrl!= null ? NetworkImage(imageUrl) : null,
+                    GestureDetector(
+                  onTap: (){
+                        _imagePick();
+                      },
+                      child: Center(
+                        child: Container(
+                          decoration: imageUrl == null
+                              ? BoxDecoration(
+                            image: DecorationImage(
+                              image: imageUrl != null
+                                  ? CachedNetworkImageProvider(
+                                 imageUrl)
+                              // ? NetworkImage(widget.displayPicture)
+                                  : AssetImage('assets/images/person.png'),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                              : BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(imageUrl),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          height: 100,
+                          width: 100,
+                          child: _isImage == true
+                              ? SpinKitPulse(
+                            color: Colors.blue,
+                          )
+                              : SizedBox(
+                            height: 0,
+                            width: 0,
                           ),
                         ),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 30,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                           color: Colors.grey
-                          ),
-                          child: Icon(
-                            Icons.camera,
-                            color: Colors.white,
-                          ),
-                        )),
-                          ],
+                      //   Stack(
+                      //       children: [GestureDetector(
+                      //       onTap: (){
+                      //         _imagePick();
+                      //       },
+                      //       child: CircleAvatar(
+                      //         radius: 55,
+                      //         backgroundColor: Colors.black,
+                      //         child: imageUrl == null ? Icon(Icons.person) : null,
+                      //         backgroundImage:
+                      //         imageUrl!= null ? NetworkImage(imageUrl) : null,
+                      //       ),
+                      //     ),
+                      // Positioned(
+                      //     bottom: 0,
+                      //     right: 0,
+                      //     child: Container(
+                      //       height: 30,
+                      //       width: 40,
+                      //       decoration: BoxDecoration(
+                      //         shape: BoxShape.circle,
+                      //        color: Colors.grey
+                      //       ),
+                      //       child: Icon(
+                      //         Icons.camera,
+                      //         color: Colors.white,
+                      //       ),
+                      //     )),
+                      //       ],
+                      //   ),
                       ),
                     ),
                     SizedBox(height: 20,),
@@ -411,7 +459,7 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
   String imageUrl = '';
   User user = FirebaseAuth.instance.currentUser;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-
+bool _updating = false;
   void _getdata() async {
     User user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -426,16 +474,13 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
       });
     });
   }
-
+  bool _isImage = false;
   bool isImageLoading = false;
-  void _handleImageSelection() async {
+  void _imagePick()async{
     setState(() {
-      isImageLoading = true;
+      _isImage = true;
     });
-    final result = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-
-    );
+    final result = await ImagePicker().pickImage(source: ImageSource.gallery);
     File croppedFile = await ImageCropper.cropImage(
         sourcePath: result.path,
         aspectRatioPresets: [
@@ -451,25 +496,25 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
           minimumAspectRatio: 1.0,
         ));
 
+    var optimisedImage = img.decodeImage(croppedFile.readAsBytesSync());
+    var newImage = img.copyResize(optimisedImage, width: 1401);
     if (result != null) {
       final file = File(result.path);
       final name = result.name;
-
       try {
         final reference = FirebaseStorage.instance.ref(name);
         await reference.putFile(file);
-        final croppedFile = await reference.getDownloadURL();
-        print(croppedFile.toString());
+        final uri = await reference.getDownloadURL();
         setState(() {
-          imageUrl = croppedFile;
+          imageUrl = uri;
         });
       } catch (e) {
         print(e);
       }
-      setState(() {
-        isImageLoading = false;
-      });
     }
+    setState(() {
+      _isImage = false;
+    });
   }
 
   void updateUser() async {
@@ -517,60 +562,86 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        backgroundColor: Color(0xffEAEAEA),
+        backgroundColor: Color(0xff3B3940),
         appBar: AppBar(
             title: Text("Profile"),
             centerTitle: true,
-            backgroundColor: Color(0xffEAEAEA),
+            backgroundColor: Color(0xff3B3940),
             elevation: 80,
-            leading: Text("OTM",style: TextStyle(color: Color(0xffEAEAEA)),)
+          leading: Text(''),
         ),
         body: Container(
           padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-          child: GestureDetector(
-            onTap: () {
-
-            },
             child: ListView(
               children: [
                 SizedBox(
                   height: 15,
                 ),
-                Center(
-                  child: Stack(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _handleImageSelection();
-                        },
-                        child: Container(
-                          width: 130,
-                          height: 130,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 3,
-                                  color:
-                                  Theme
-                                      .of(context)
-                                      .scaffoldBackgroundColor),
-                              boxShadow: [
-                                BoxShadow(
-                                    spreadRadius: 2,
-                                    blurRadius: 10,
-                                    color: Color(0xffEAEAEA).withOpacity(0.1),
-                                    offset: Offset(0, 10))
-                              ],
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    imageUrl == null
-                                        ? AssetImage("assets/images/img.png")
-                                        : imageUrl,
-                                  ))),
+                GestureDetector(
+                  onTap: (){
+                    _imagePick();
+                  },
+                  child: Center(
+                    child: Container(
+                      decoration: imageUrl == null
+                          ? BoxDecoration(
+                        image: DecorationImage(
+                          image: imageUrl != null
+                              ? CachedNetworkImageProvider(
+                              imageUrl)
+                          // ? NetworkImage(widget.displayPicture)
+                              : AssetImage('assets/images/person.png'),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      )
+                          : BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(imageUrl),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    ],
+                      height: 100,
+                      width: 100,
+                      child: _isImage == true
+                          ? SpinKitPulse(
+                        color: Colors.blue,
+                      )
+                          : SizedBox(
+                        height: 0,
+                        width: 0,
+                      ),
+                    ),
+                    //   Stack(
+                    //       children: [GestureDetector(
+                    //       onTap: (){
+                    //         _imagePick();
+                    //       },
+                    //       child: CircleAvatar(
+                    //         radius: 55,
+                    //         backgroundColor: Colors.black,
+                    //         child: imageUrl == null ? Icon(Icons.person) : null,
+                    //         backgroundImage:
+                    //         imageUrl!= null ? NetworkImage(imageUrl) : null,
+                    //       ),
+                    //     ),
+                    // Positioned(
+                    //     bottom: 0,
+                    //     right: 0,
+                    //     child: Container(
+                    //       height: 30,
+                    //       width: 40,
+                    //       decoration: BoxDecoration(
+                    //         shape: BoxShape.circle,
+                    //        color: Colors.grey
+                    //       ),
+                    //       child: Icon(
+                    //         Icons.camera,
+                    //         color: Colors.white,
+                    //       ),
+                    //     )),
+                    //       ],
+                    //   ),
                   ),
                 ),
                 SizedBox(
@@ -636,54 +707,7 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
                       )
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: TextFormField(
-                //     readOnly: true,
-                //     style: TextStyle(color: Colors.white),
-                //     decoration: InputDecoration(
-                //         enabledBorder: OutlineInputBorder(
-                //           borderSide: BorderSide(color: Colors.white),
-                //         ),
-                //         focusedBorder: OutlineInputBorder(
-                //           borderSide: BorderSide(color:Colors.white),
-                //         ),
-                //         border:  OutlineInputBorder(
-                //           borderSide: BorderSide(color: Colors.white),
-                //         ),
-                //         labelText: "${user.email}",
-                //         labelStyle: TextStyle(color: Colors.white),),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       border: Border.all(color: Colors.white),
-                //       borderRadius: BorderRadius.circular(5),
-                //     ),
-                //    height: 50,
-                //    width: MediaQuery.of(context).size.width/1,
-                //    child: Padding(
-                //      padding: const EdgeInsets.only(right: 180),
-                //      child: Center(child: Text("${user.email}", style: TextStyle(color: Colors.white),)),
-                //    ),
-                //   ),
-                // ),
 
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Container(
-                //     decoration:
-                //     BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                //     child: Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: TextField(
-                //         decoration: InputDecoration(labelText: 'Status'),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   height: 35,
                 ),
@@ -720,7 +744,6 @@ class _RegesterPorfileState extends State<RegesterPorfile> {
             ),
           ),
         ),
-      ),
     );
   }
 

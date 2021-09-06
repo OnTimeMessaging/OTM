@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:ontimemessaging/SignUp.dart';
 import 'package:ontimemessaging/Users.dart';
@@ -33,17 +35,71 @@ class _RoomsPageState extends State<RoomsPage> {
   User _user;
   User user = FirebaseAuth.instance.currentUser;
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   String imageUrl = '';
 
   @override
   void initState() {
     initializeFlutterFire();
+    registerNotification();
+    configLocalNotification();
     super.initState();
+
   //  _getdata();
   }
-bool _userLoading = false;
+  void registerNotification() {
+    firebaseMessaging.requestPermission();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('onMessage: $message');
+      if (message.notification != null) {
+        showNotification(message.notification);
+      }
+      return;
+    });
+
+    firebaseMessaging.getToken().then((token) {
+      print('token: $token');
+      FirebaseFirestore.instance.collection('users').doc(user.uid).update({'pushToken': token});
+    }).catchError((err) {
+      Fluttertoast.showToast(msg: err.message.toString());
+    });
+  }
+
+  void configLocalNotification() {
+    AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings();
+    InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+  void showNotification(RemoteNotification remoteNotification) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      Platform.isAndroid ? "hmrengg.com.ontimemessaging" : "hmrengg.com.ontimemessaging",
+      'Flutter chat demo',
+      'your channel description',
+      playSound: true,
+      enableVibration: true,
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+
+    print(remoteNotification);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      remoteNotification.title,
+      remoteNotification.body,
+      platformChannelSpecifics,
+      payload: null,
+    );
+  }
+
+  bool _userLoading = false;
   // void _getdata() async {
   //   User user = FirebaseAuth.instance.currentUser;
   //   FirebaseFirestore.instance
@@ -106,10 +162,10 @@ bool _userLoading = false;
     try {
       await Firebase.initializeApp();
       FirebaseAuth.instance.authStateChanges().listen((User user) {
-        if(mounted){setState(() {
+      setState(() {
           _user = user;
         });
-     } });
+     });
       setState(() {
         _initialized = true;
       });
@@ -205,14 +261,11 @@ bool _userLoading = false;
 
     return WillPopScope(
       onWillPop: () async => false,
-      // child: ModalProgressHUD(
-      //   inAsyncCall:_userLoading ,
-      //   child: _userLoading == true ?
-      //   Container()
-      //       :
        child: Scaffold(
           backgroundColor: Color(0xff3B3940),
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: _user == null
+              ? null
+              :FloatingActionButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return UsersPage();
@@ -227,19 +280,6 @@ bool _userLoading = false;
                   elevation: 1,
                   backgroundColor: Color(0xff3B3940),
                   actions: [
-                    // IconButton(
-                    //   icon: const Icon(Icons.account_circle),
-                    //   onPressed: _user == null
-                    //       ? null
-                    //       : () {
-                    //     Navigator.of(context).push(
-                    //       MaterialPageRoute(
-                    //         fullscreenDialog: true,
-                    //         builder: (context) => EditProfilePage(),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                     IconButton(
                         onPressed: () {
                           showMenu(
@@ -248,46 +288,49 @@ bool _userLoading = false;
                             color: Color(0xff3B3940),
                             position: RelativeRect.fromLTRB(25.0, 85.0, 0.0, 0.0),
                             items: [ PopupMenuItem(
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                          return SchedulePage();
-                                        }));
-                                  },
-                                  child: Container(
-                                      child: Text("Schedule",
-                                          style: TextStyle(
-                                              color: Color(0xffEAEAEA))))),
+                              child: FlatButton(
+                                height:1,
+                                minWidth:10,
+                                onPressed:(){
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return SchedulePage();
+                                      }));
+                          },
+                                child: Text("Schedule",
+                                    style: TextStyle(
+                                        color: Color(0xffEAEAEA))),
+                              ),
                             ),
                               PopupMenuItem(
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
+                                child: FlatButton(
+                                  height:1,
+                                  minWidth:10,
+                                  onPressed:(){ Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
                                         return EditProfilePage();
-                                      }));
-                                    },
-                                    child: Container(
-                                        child: Text("Profile",
-                                            style: TextStyle(
-                                                color: Color(0xffEAEAEA))))),
+                                      }));},
+                                  child: Text("Profile",
+                                      style: TextStyle(
+                                          color: Color(0xffEAEAEA))),
+                                ),
                               ),
                               PopupMenuItem(
-                                child: GestureDetector(
-                                    onTap: _user == null ? null : logout,
-                                    child: Container(
-                                        child: Text("LogOut",
-                                            style: TextStyle(
-                                                color: Color(0xffEAEAEA))))),
-                              ),
+                                    child: FlatButton(
+                                      height:1,
+                                      minWidth:10,
+                                      onPressed:(){ _user == null ? null : logout;},
+                                      child: Text("LogOut",
+                                          style: TextStyle(
+                                              color: Color(0xffEAEAEA))),
+                                    ))
                             ],
                           );
                         },
                         icon: Icon(Icons.more_vert))
                   ],
-                  title: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(top: 20,left: 13),
                     child: Text(
                       'OTM',
                       style: TextStyle(
@@ -298,14 +341,7 @@ bool _userLoading = false;
                   ),
                 ),
           body: _user == null
-              ? SplashScreen(
-                  seconds: 3,
-                  navigateAfterSeconds: LoginPage(),
-                 loadingText: Text("Get connected to friends with OTM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10),),
-                  title: Text("OTM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 100),),
-                  // navigateAfterSeconds: new AfterSplash(),
-                  backgroundColor: Color(0xff3B3940),
-              )
+             ?_login()
               : StreamBuilder<List<types.Room>>(
                   stream: FirebaseChatCore.instance.rooms(),
                   initialData: const [],
@@ -317,8 +353,8 @@ bool _userLoading = false;
                           bottom: 200,
                         ),
                         child: const Text(
-                          'No chats yet. \n Get started by messaging a friend',
-                          style: TextStyle(color: Colors.white),
+                          '               No chats yet \n Get started by messaging a friend',
+                          style: TextStyle(color: Colors.white,fontSize: 20),
                         ),
                       );
                     }
@@ -360,6 +396,16 @@ bool _userLoading = false;
                 ),
         ),
 
+    );
+  }
+  Widget _login (){
+    return  SplashScreen(
+    seconds: 3,
+    navigateAfterSeconds: LoginPage(),
+    loadingText: Text("Get connected to friends with OTM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 10),),
+    title: Text("OTM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 100),),
+    // navigateAfterSeconds: new AfterSplash(),
+    backgroundColor: Color(0xff3B3940),
     );
   }
 }

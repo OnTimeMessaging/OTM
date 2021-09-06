@@ -326,7 +326,7 @@ class _ChatPageState extends State<ChatPage> {
     String serverUrl = serverText.text.trim().isEmpty ? null : serverText.text;
 
     Map<FeatureFlagEnum, bool> featureFlags = {
-      FeatureFlagEnum.WELCOME_PAGE_ENABLED: false,
+      FeatureFlagEnum.WELCOME_PAGE_ENABLED: true,
     };
     if (!kIsWeb) {
       // Here is an example, disabling features for each platform
@@ -352,7 +352,7 @@ class _ChatPageState extends State<ChatPage> {
         "roomName": myUsername,
         "width": "100%",
         "height": "100%",
-        "enableWelcomePage": false,
+        "enableWelcomePage": true,
         "chromeExtensionBanner": null,
         "userInfo": {"displayName": myUsername}
       };
